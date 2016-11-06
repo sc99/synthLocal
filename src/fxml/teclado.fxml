@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane  fx:id="aP" id="AnchorPane"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.tecladoCtrl"   onKeyPressed="#suenaNota">
+    <children>
+        <Label fx:id="lab1" text="HAS LLEGADO AL TECLADO" />
+        
+       <MenuBar fx:id="menu" xmlns:fx="http://javafx.com/fxml/1">
+            <Menu fx:id="mEfectos" text="Efectos" >
+                <items>
+                <MenuItem fx:id="agregarEf" text="Agregar efecto" onAction="#manejaMenu" />
+                <MenuItem fx:id="abrirEf" text="Abrir efecto" onAction="#manejaMenu"/>
+                <MenuItem fx:id="guardar" text="Guardar" onAction="#manejaMenu"/>
+                </items>
+            </Menu>
+            <Menu fx:id="mPost" text="Web" >
+                <MenuItem fx:id="postea" text="Publicar" onAction="#manejaMenu" />
+            </Menu>
+            <Menu fx:id="mExtras" text="Más">
+                <MenuItem fx:id="inf" text="Información aplicación" onAction="#manejaMenu" />
+                <MenuItem fx:id="configTecl" text="Configuración Teclado" onAction="#manejaMenu"/>
+            </Menu>
+            
+        </MenuBar>
+        <!--<HBox fx:id="teclado">
+            <children>-->
+               <Rectangle fx:id="c1"/>
+               <Rectangle fx:id="c1sos"/>
+               <Rectangle fx:id="d1"/>
+               <Rectangle fx:id="d1sos"/>
+               <Rectangle fx:id="e1"/>
+               <Rectangle fx:id="f1"/>
+               <Rectangle fx:id="f1sos"/>
+               <Rectangle fx:id="g1"/>
+               <Rectangle fx:id="g1sos"/>
+               <Rectangle fx:id="a1"/>
+               <Rectangle fx:id="a1sos"/>
+               <Rectangle fx:id="b1"/>
+               
+               <Rectangle fx:id="c2"/>
+               <Rectangle fx:id="c2sos"/>
+               <Rectangle fx:id="d2"/>
+               <Rectangle fx:id="d2sos"/>
+               <Rectangle fx:id="e2"/>
+               <Rectangle fx:id="f2"/>
+               <Rectangle fx:id="f2sos"/>
+               <Rectangle fx:id="g2"/>
+               <Rectangle fx:id="g2sos"/>
+               <Rectangle fx:id="a2"/>
+               <Rectangle fx:id="a2sos"/>
+               <Rectangle fx:id="b2"/>
+               
+               <Rectangle fx:id="c3"/>
+               <Rectangle fx:id="c3sos"/>
+               <Rectangle fx:id="d3"/>
+               <Rectangle fx:id="d3sos"/>
+               <Rectangle fx:id="e3"/>
+               <Rectangle fx:id="f3"/>
+               <Rectangle fx:id="f3sos"/>
+               <Rectangle fx:id="g3"/>
+               <Rectangle fx:id="g3sos"/>
+               <Rectangle fx:id="a3"/>
+               <Rectangle fx:id="a3sos"/>
+               <Rectangle fx:id="b3"/>
+          <!-- </children>
+        </HBox>-->
+    </children>
+     
+</AnchorPane>
