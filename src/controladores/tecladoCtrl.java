@@ -5,20 +5,35 @@
  */
 package controladores;
 
+
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,18 +41,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javax.sound.midi.MidiSystem;
+import midi.cSequence;
 
 /**
  * FXML Controller class
  *
  * @author Alumno
  */
-public class tecladoCtrl implements Initializable {
+public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccionary  {
 
-    private final int aPant=Toolkit.getDefaultToolkit().getScreenSize().height;
-    private final int lPant=Toolkit.getDefaultToolkit().getScreenSize().width;
     
     
     
@@ -46,6 +65,10 @@ public class tecladoCtrl implements Initializable {
      */
 //    @FXML
 //    private HBox teclado;
+//    public static boolean estBtns[]={true,true,true,true,true};
+    private static boolean invitado=false;
+    private static boolean mostrar=true;
+    public static clases.cEfectos set=new clases.cEfectos();
     @FXML
     AnchorPane aP;
     @FXML
@@ -122,9 +145,11 @@ public class tecladoCtrl implements Initializable {
     Rectangle a3sos;
     @FXML
      Rectangle b3;
+     midi.cMidi mid=new midi.cMidi();
     
 
-    String [][] arrR=new String[36][2];
+    private static String [][] arrR=new String[36][2];
+    Rectangle [] arrNtas=new Rectangle[36];
    
     
     @FXML
@@ -136,38 +161,240 @@ public class tecladoCtrl implements Initializable {
     @FXML
     private MenuBar menu;   
     @FXML
+    private Menu mArchivo;
+    @FXML
     private Menu mEfectos;
     @FXML 
     private Menu mPost;
     @FXML
     private Menu mExtras;
-    @FXML 
-    private Label lab1;
+    //CHINGARSE BOTON GUARDAR SET EN CONFIGEFECTO
+    @FXML
+    private MenuItem guardaSet; 
     @FXML
     private MenuItem postea;
     @FXML
     private MenuItem inf;
     @FXML
     private MenuItem configTecl;
-    
+    @FXML
+    private MenuItem mostrarTecl;
+    @FXML
+    private ToggleButton record;
+    @FXML
+    private ToggleButton stop;
+    @FXML
+    private ToggleButton play;
+    @FXML
+    private ToggleButton pause;
 
-   
-    @FXML
-    public void manejaMenu(ActionEvent e){
-        System.out.println("Metodo");
-        System.out.println(e.getSource());
-    }
+    public  static ToggleButton Chorus=new ToggleButton();
+
+    public  static ToggleButton Delay=new ToggleButton();
+
+    public  static ToggleButton PitchShift=new ToggleButton();
+
+    public  static ToggleButton Reverb=new ToggleButton();
+
+    public  static ToggleButton Tremolo=new ToggleButton();
     
-    @FXML
-    public void suenaNota(KeyEvent e){
-        System.out.println("Tecla presionada");
-        System.out.println(e.getCode());
-        lab1.setText(getNotaTocada(e.getText()));
-//        if(e.getCode().equals(KeyCode.A)){
-//         Stage s= (Stage)aP.getScene().getWindow();
-//         s.close();
-//        }
+   public static boolean getInvitado(){
+       return invitado;
+   }
+   public static boolean getMostrar(){
+       return mostrar;
+   }
+   public void ventanaConfig(Stage princStage) throws IOException{
+       Parent root = FXMLLoader.load(getClass().getResource("/fxml/configEfecto.fxml"));       
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/pruebas.css").toExternalForm());
+        Stage secStage=new Stage();
+        secStage.getIcons().add(new Image("/imgs/Synth.png"));
+        secStage.initOwner(princStage);
+        secStage.initModality(Modality.WINDOW_MODAL);
+        secStage.setScene(scene);
+        secStage.setResizable(false);
+        secStage.setTitle("EFECTOS");
+        secStage.setOnCloseRequest(e->alerta(secStage,e));
+        secStage.show();
+        //scene.getRoot().requestFocus();
+   }
+   public void ventanaCfgTecl(Stage princStage,int modificable) throws IOException{
+       Parent root = FXMLLoader.load(getClass().getResource("/fxml/configTec.fxml"));       
+        Scene scene = new Scene(root);
+        Stage secStage=new Stage();
+        secStage.getIcons().add(new Image("/imgs/Synth.jpg"));
+        secStage.initOwner(princStage);
+        secStage.initModality(Modality.WINDOW_MODAL);
+        secStage.setScene(scene);
+        secStage.setResizable(false);
+        secStage.setTitle("EFECTOS");
+        //            secStage.setOnCloseRequest(e->alerta(secStage,e));
+        if(modificable==1)
+            secStage.setOnCloseRequest(e->cerrarNoModificable(secStage));
+        secStage.show();
+   }
+   public void cerrarNoModificable(Stage st){
+        Alert alerta=new Alert(Alert.AlertType.INFORMATION);
+        st.getIcons().add(new Image("/imgs/Synth.png"));
+        alerta.setTitle("¡Hey!");
+        alerta.setHeaderText("¡Recuerda!");
+        alerta.setContentText("Si esta configuracion no te acomoda puedes cambiarla.");
+        Optional<ButtonType> result=alerta.showAndWait();
+        if(result.get() == ButtonType.OK){
+            mostrar=true;
+            st.close();
+            System.out.println(mostrar);
+        }
+       
+   }
+   public void ventanaInfo(Stage princStage) throws IOException{
+       Parent root = FXMLLoader.load(getClass().getResource("/fxml/webInf.fxml"));       
+        Scene scene = new Scene(root);
+        Stage secStage=new Stage();
+        secStage.getIcons().add(new Image("/imgs/Synth.png"));
+        secStage.initOwner(princStage);
+        secStage.initModality(Modality.WINDOW_MODAL);
+        secStage.setScene(scene);
+        secStage.setResizable(false);
+        secStage.setTitle("EFECTOS");
+       // secStage.setOnCloseRequest(e->alerta(secStage,e));
+        secStage.show();
+   }
+   public void ventanaAbreEf(Stage st){
+    FileChooser choser= new FileChooser();
+    choser.setTitle("Abrir archivo de configuración");
+    choser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Config Sonido","*.synth"));
+    choser.setInitialDirectory(new File("C:\\Synth"));
+    File config = choser.showOpenDialog(st);
+    if(config!= null){
+        System.out.println("Capturado");
+        System.out.println(config.getAbsolutePath());
+        System.out.println(config.getName());
+        //clases.cEfectos nSet=new clases.cEfectos(config.getAbsolutePath());
+        set.setSetEfectos(config.getAbsolutePath());
+        if(set.cargaEfectos())
+        {
+            System.out.println("Efectos cargados!");
+            aviso((Stage)menu.getScene().getWindow(),"Se han cargado nuevos efectos.");
+        }
+        else
+        {
+           aviso((Stage)menu.getScene().getWindow(),"¡Error al cargar los efectos!");
+        }
+        
+    }else{
+        archivoVacio(st,"Si no introduces un archivo de sonido no se cargarán nuevos efectos");  
     }
+       
+   }
+   public void archivoVacio(Stage st,String msj){
+        Alert alerta=new Alert(Alert.AlertType.INFORMATION);
+        st.getIcons().add(new Image("/imgs/Synth.png"));
+        alerta.setTitle("¡Hey!");
+        alerta.setHeaderText("\tRecuerda");
+        alerta.setContentText(msj);
+        Optional<ButtonType> result=alerta.showAndWait();
+   }
+   public void aviso(Stage st,String msj){
+       Alert aviso=new Alert(Alert.AlertType.INFORMATION);
+       st.getIcons().add(new Image("/imgs/Synth.png"));
+       aviso.setTitle("Aviso");
+       aviso.setHeaderText("Mensaje de estatus");
+       aviso.setContentText(msj);
+      Optional<ButtonType> result=aviso.showAndWait();
+   }
+   public void guardaArchivo(Stage st){
+       boolean fallo=true;
+       String extension="";
+       FileChooser saver=new FileChooser();  
+       if((new File("C:\\Synth")).exists())
+            saver.setInitialDirectory(new File("C:\\Synth"));
+       
+           saver.setTitle("Guardar archivo");
+           FileChooser.ExtensionFilter ext=
+           new FileChooser.ExtensionFilter("Archivo de set de "
+                                            + "efectos (*.synth)","*.synth");    
+           saver.getExtensionFilters().add(ext);
+           File file= saver.showSaveDialog(st);
+           if(file !=null){
+
+               extension=file.getName();
+               if(extension.endsWith(".synth"))
+               {
+                  System.out.println(file.getAbsolutePath());
+                  fallo= set.guardaSet(file.getAbsolutePath());
+                  if(fallo)
+                      archivoVacio(st,"Fallo en la creación del archivo");
+                  else
+                      aviso(st,"Archivo creado con éxito");
+               }else
+                   archivoVacio(st,"Extension de archivo inválida");
+           }else{
+               System.out.println("????");
+           }
+       
+       
+   }
+
+   public String [] getNomBtns(){
+       String nombres []={"Delay","Chorus","Reverb","Pitch Shift","Tremolo"};
+       return nombres;
+   }
+   public  void desbloqueaEfecto(String idEfecto,boolean value){
+       switch(idEfecto){
+           case "Delay":
+               Delay.setDisable(value);
+               break;
+           case "Chorus":
+               Chorus.setDisable(value);
+               break;
+           case "Reverb":
+               Reverb.setDisable(value);
+               break;
+           case "Pitch Shift":
+               PitchShift.setDisable(value);
+               break;
+           case "Tremolo":
+               Tremolo.setDisable(value);
+               break;
+       }
+   }
+    @FXML
+    public void manejaMenu(ActionEvent e) throws IOException{
+        if(e.getSource()==agregarEf)
+        {
+            ventanaConfig((Stage) menu.getScene().getWindow());
+        }
+        else
+        {
+            if(e.getSource()==abrirEf)
+            {
+                ventanaAbreEf((Stage)menu.getScene().getWindow());
+            }
+            else
+            {
+                if(e.getSource()==guardaSet){
+                    guardaArchivo((Stage)menu.getScene().getWindow());
+                }else
+                {
+                    if(e.getSource()==inf){
+                        ventanaInfo((Stage) menu.getScene().getWindow());
+                    }else
+                        if(e.getSource()==configTecl)
+                        {
+                            ventanaCfgTecl((Stage) menu.getScene().getWindow(),0);
+                        }else
+                            if(e.getSource()==mostrarTecl)
+                            {
+                                mostrar=false;
+                                ventanaCfgTecl((Stage) menu.getScene().getWindow(),1);
+                            }
+                }
+            }
+        }
+    }
+
     public String getNotaTocada(String tecla){
         String nota="";
         for(int i=0;i<36;i++){
@@ -176,79 +403,310 @@ public class tecladoCtrl implements Initializable {
         }
         return nota;
     }
+    @FXML
+    public void tocarTecla(KeyEvent e){
+        String idTcla=getNotaTocada(e.getText());
+        int xId=0;
+        //System.out.println(e.getText());
+        if(e.getText().equals(" "))
+        {
+            //System.out.println("ASFD");
+            cController.soft=true;
+        }
+        for(int i=0;i<arrNtas.length;i++){
+            if(arrNtas[i].getId().equals(idTcla))
+            {           
+               Paint efecto=idTcla.endsWith("s")?Color.PURPLE:Color.LIGHTCYAN;
+               //System.out.println("Tum");
+               if(!arrNtas[i].getFill().equals(efecto)){
+                   mid.addToQueue(i+C3,1); 
+                   
+                       
+               }
+               arrNtas[i].setFill(efecto); 
+               
+            }
+                            
+        }
+        
+    }
+    @FXML
+   public void sueltaTecla(KeyEvent e){
+       String idTcla=getNotaTocada(e.getText());
+        int xId=0;
+        if(e.getText().equals(" "))
+        {
+            //System.out.println("ASDASD");
+            cController.soft=false;
+        }
+        for(int i=0;i<arrNtas.length;i++){
+            if(arrNtas[i].getId().equals(idTcla))
+            {
+               Paint efecto=idTcla.endsWith("s")?Color.BLACK:Color.WHITE;
+               //System.out.println("Tum");
+               arrNtas[i].setFill(efecto);
+                mid.addToQueue(i+C3,0);
+            }
+            
+        }
+   }
+    
     //Asigna configuracion de teclas guardada a
     //cada rectangulo del teclado virtual
     public void asignarTeclas(Rectangle [] tecl){
-        
+        String [] teclas= synthCtrl.sesion.getTeclado();
         //Aquí llamamos a la clase de serialización y abrimos el archivo.
-        String [] teclas={"q","2","w","3","e","r","5","t","6","y","7","u",
-                          "i","9","o","0","p","z","s","x","d","c","f","v",
-                          "g","b","h","n","j","m","k",",","l",".","ñ","-",};
-        //for(int j=0;j<2;j++){
             for(int i=0;i<tecl.length;i++){
                 arrR[i][0]=tecl[i].getId();
                 arrR[i][1]=teclas[i];
             }
-        //}
         
+    }
+    public static void asignarNvsTcls(){
+        String [] teclas=synthCtrl.sesion.getTeclado();
+        for(int i=0;i<teclas.length;i++)
+        {
+            arrR[i][1]=teclas[i];
+        }
     }
     
     public void mostrarTeclado(Rectangle [] aR){
-        
         aR[0].setWidth(lPant/24);
         aR[0].setHeight(aPant/3);
         aR[0].setLayoutX(lPant/16);
         aR[0].setY(aPant/2);
         aR[0].setFill(Color.WHITE);
         aR[0].setStroke(Color.BLACK);
-        System.out.println(aR[0].getX());
-        System.out.println(aR.length);
-            for(int i=1;i<aR.length;i++){
-
-                
-                aR[i].setY(aPant/2);
-                System.out.println(aR[i].getId());
-                //negra 
-                if(aR[i].getId().endsWith("s")){
-                    aR[i].setWidth(lPant/48);
-                    System.out.println(aR[i].getId()+"DENTRO IF");
-                    aR[i].setHeight(aPant/6);
-                    aR[i].setLayoutX(aR[i-1].getLayoutX()+aR[i-1].getWidth()/2);                
-                    aR[i].setFill(Color.BLACK);
-                    aR[i].setStroke(Color.WHITE); 
-                      
-                }
+        //para teclas blancas
+        for(int i=1;i<aR.length;i++){
+            aR[i].setY(aPant/2);
+            //negra 
+            if(!aR[i].getId().endsWith("s")){
+                aR[i].setWidth(lPant/24);
+                aR[i].setHeight(aPant/3);
+                if(aR[i].getId().startsWith("f")||aR[i].getId().startsWith("c"))
+                    aR[i].setLayoutX(aR[i-1].getLayoutX()+aR[i-1].getWidth());
                 else
-                {
-                    aR[i].setWidth(lPant/24);
-                    aR[i].setHeight(aPant/3);
-                    if(aR[i].getId().startsWith("f")||aR[i].getId().startsWith("c"))
-                        aR[i].setLayoutX(aR[i-1].getLayoutX()+aR[i-1].getWidth());
-                    else
-                        aR[i].setLayoutX(aR[i-2].getLayoutX()+aR[i-2].getWidth());                 
-                    aR[i].setFill(Color.WHITE);
-                    aR[i].setStroke(Color.BLACK); 
-                    
-                }
+                    aR[i].setLayoutX(aR[i-2].getLayoutX()+aR[i-2].getWidth());                 
+                aR[i].setFill(Color.WHITE);
+                aR[i].setStroke(Color.BLACK); 
             }
+        }
+        for(int i=1;i<aR.length;i++){
+            aR[i].setY(aPant/2);
+            //negra 
+            if(aR[i].getId().endsWith("s")){
+                aR[i].setWidth(lPant/48);
+                aR[i].setHeight(aPant/6);
+                aR[i].setLayoutX(aR[i-1].getLayoutX()+aR[i-1].getWidth()*3/4);
+                aR[i].setFill(Color.BLACK);
+                aR[i].setStroke(Color.WHITE); 
+            }
+        }
+    }
+    
+    @FXML
+    public void manejaEfecto(ActionEvent e){
+        System.out.println("Delay");
+    }
+    public void btnsNoVisibles(boolean estado){
+        Chorus.setDisable(estado);
+        Delay.setDisable(estado);
+        Reverb.setDisable(estado);
+        Tremolo.setDisable(estado);
+        PitchShift.setDisable(estado);
+    }
+    public void setBorderR(String borderR){
+        Chorus.setStyle(borderR);
+        Delay.setStyle(borderR);
+        Reverb.setStyle(borderR);
+        Tremolo.setStyle(borderR);
+        PitchShift.setStyle(borderR);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        
+        Image cho=new Image(getClass().getResourceAsStream("/imgs/Chorus.png"));   
+        ImageView s=new ImageView(cho);
+        s.setFitWidth(lPant/12);
+        s.setFitHeight(lPant/12);
+        Chorus.setGraphic(s);
+        
+        Image de=new Image(getClass().getResourceAsStream("/imgs/Delay.png"));
+        ImageView d=new ImageView(de);
+        d.setFitWidth(lPant/12);
+        d.setFitHeight(lPant/12);
+        Delay.setGraphic(d);
+        
+        
+        Image ps=new Image(getClass().getResourceAsStream("/imgs/PitchShift.png"));
+        ImageView p=new ImageView(ps);
+        p.setFitWidth(lPant/12);
+        p.setFitHeight(lPant/12);
+        PitchShift.setGraphic(p);
+        
+        Image rev=new Image(getClass().getResourceAsStream("/imgs/Reverb.png"));
+        ImageView re=new ImageView(rev);
+        re.setFitWidth(lPant/12);
+        re.setFitHeight(lPant/12);
+        Reverb.setGraphic(re);
+        
+        Image trem=new Image(getClass().getResourceAsStream("/imgs/Tremolo.png"));
+        ImageView t=new ImageView(trem);
+        t.setFitWidth(lPant/12);
+        t.setFitHeight(lPant/12);
+        Tremolo.setGraphic(t);
+        
+        Delay.setMaxSize(lPant/12,lPant/12);
+        Delay.setMinSize(lPant/12,lPant/12);
+        Delay.setLayoutX(lPant/64*7);
+        Delay.setLayoutY(aPant/8);
+        
+        Chorus.setMaxSize(lPant/12,lPant/12);
+        Chorus.setMinSize(lPant/12,lPant/12);
+        Chorus.setLayoutX(Delay.getLayoutX()+Delay.getWidth()+lPant/16*14/5);
+        Chorus.setLayoutY(aPant/8);
+        
+        PitchShift.setMaxSize(lPant/12,lPant/12);
+        PitchShift.setMinSize(lPant/12,lPant/12);
+        PitchShift.setLayoutX(Chorus.getLayoutX()+Chorus.getWidth()+lPant/16*14/5);
+        PitchShift.setLayoutY(aPant/8);
+        
+        Reverb.setMaxSize(lPant/12,lPant/12);
+        Reverb.setMinSize(lPant/12,lPant/12);
+        Reverb.setLayoutX(PitchShift.getLayoutX()+PitchShift.getWidth()+lPant/16*14/5);
+        Reverb.setLayoutY(aPant/8);
+        
+        Tremolo.setMaxSize(lPant/12,lPant/12);
+        Tremolo.setMinSize(lPant/12,lPant/12);
+        Tremolo.setLayoutX(Reverb.getLayoutX()+Reverb.getWidth()+lPant/16*14/5);
+        Tremolo.setLayoutY(aPant/8);
+        
+        aP.getChildren().addAll(Chorus,Delay,Reverb,PitchShift,Tremolo);
         Rectangle [] aR={c1,c1sos,d1,d1sos,e1,f1,f1sos,g1,g1sos,a1,a1sos,b1,
             c2,c2sos,d2,d2sos,e2,f2,f2sos,g2,g2sos,a2,a2sos,b2,
             c3,c3sos,d3,d3sos,e3,f3,f3sos,g3,g3sos,a3,a3sos,b3};
         
+        arrNtas=aR;
+        
         menu.setPrefSize(lPant,aPant/16);
-        lab1.setLayoutX(lPant/2);
-        lab1.setLayoutY(aPant/3);
         
         asignarTeclas(aR);
         //arrR=aR;       
         mostrarTeclado(aR);
+        Image rec = new Image(getClass().getResourceAsStream("/imgs/micro.png"));
+        ImageView reco = new ImageView(rec);
+        reco.setFitWidth(lPant / 31);
+        reco.setFitHeight(lPant / 31);
+        record.setGraphic(reco);
+        record.setMaxSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        record.setMinSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        record.setLayoutX(lPant / 5);
+        record.setLayoutY(aPant / 16 * 6);
+        record.setDisable(false);
+
+        Image pau = new Image(getClass().getResourceAsStream("/imgs/pausa.png"));
+        ImageView paus = new ImageView(pau);
+        paus.setFitWidth(lPant / 31 * 0.7);
+        paus.setFitHeight(lPant / 31 * 0.7);
+        pause.setGraphic(paus);
+        pause.setMaxSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        pause.setMinSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        pause.setLayoutX(lPant / 5 * 2);
+        pause.setLayoutY(aPant / 16 * 6);
+        pause.setDisable(true);
+
+        Image st = new Image(getClass().getResourceAsStream("/imgs/stop.png"));
+        ImageView sto = new ImageView(st);
+        sto.setFitWidth(lPant / 31 * 0.7);
+        sto.setFitHeight(lPant / 31 * 0.7);
+        stop.setGraphic(sto);
+        stop.setMaxSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        stop.setMinSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        stop.setLayoutX(lPant / 5 * 3);
+        stop.setLayoutY(aPant / 16 * 6);
+        stop.setDisable(true);
+
+        Image pl = new Image(getClass().getResourceAsStream("/imgs/play.png"));
+        ImageView pla = new ImageView(pl);
+        pla.setFitWidth(lPant / 31 * 0.7);
+        pla.setFitHeight(lPant / 31 * 0.7);
+        play.setGraphic(pla);
+        play.setMaxSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        play.setMinSize(lPant / 31 * 1.5, aPant / 31 * 1.5);
+        play.setLayoutX(lPant / 5 * 4);
+        play.setLayoutY(aPant / 16 * 6);
+        play.setDisable(true);
         
+        mid.start();
+        btnsNoVisibles(true);
+        setBorderR("-fx-border-radius: 19; -fx-border-color: transparent");
        
 
-    }    
-    
+    }  
+    @FXML
+    public void record(ActionEvent e){
+        cSequence.turnRecording();
+        record.setDisable(true);
+        pause.setDisable(false);
+        stop.setDisable(false);
+        play.setDisable(true);
+    }
+    @FXML
+    public void play(ActionEvent e){
+        try{
+            cSequence.playRecord();
+        }catch(Exception ex){
+            System.out.println("Error al reproducir!!");
+            System.out.println(ex.getMessage());
+        }
+        record.setDisable(true);
+        pause.setDisable(true);
+        stop.setDisable(false);
+        play.setDisable(true);
+    }
+    @FXML
+    public void stop(ActionEvent e){
+        cSequence.finish();
+        record.setDisable(false);
+        pause.setDisable(false);
+        stop.setDisable(false);
+        play.setDisable(false);
+    }
+    @FXML
+    public void pause(ActionEvent e){
+        cSequence.turnRecording();
+        record.setDisable(false);
+        pause.setDisable(true);
+        stop.setDisable(false);
+        play.setDisable(false);
+    }
+    @FXML
+    public void save(ActionEvent e){
+        try{
+            FileChooser choser= new FileChooser();
+            choser.setTitle("Guardar audio");
+            choser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("MID","*.mid")
+              
+            );
+            choser.setInitialDirectory(new File("C:\\Synth"));
+            File config = choser.showSaveDialog((Stage)menu.getScene().getWindow());
+            if(config.getName().endsWith(".mid")){
+                int[] types = MidiSystem.getMidiFileTypes(cSequence.getSequence());
+                MidiSystem.write(cSequence.getSequence(), types[0], config);
+                aviso((Stage)menu.getScene().getWindow(),"Archivo guardado con exito");
+            }else{
+                throw new Exception("");
+            }
+        }catch(Exception es){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Mensaje del programa");
+            alert.setHeaderText("Error guardando el archivo!");
+            alert.setContentText("Comprueba que el nombre del archivo sea valido (.mid) \n"
+                    + "o asegúrese de que ya hay un audio grabado listo para guardarse.");
+            alert.showAndWait();
+        }
+    }
 }

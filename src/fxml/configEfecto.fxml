@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="ventanaConfig" id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ConfigEfecto">
+    <children>
+    <VBox fx:id="efectos">
+        <children>
+            <Button fx:id="Delay" text="Delay" onAction="#apareceSliders"></Button>
+            <Button fx:id="Chorus" text="Chorus" onAction="#apareceSliders"></Button>
+            <Button fx:id="Reverb" text="Reverb" onAction="#apareceSliders"></Button>
+            
+            <Button fx:id="PitchShift" text="Pitch Shift" onAction="#apareceSliders"></Button>
+            <Button fx:id="Pressure" text="Tremolo" onAction="#apareceSliders"></Button>
+        </children>
+    </VBox>
+    <AnchorPane fx:id="ventEfect">
+        <children>
+           <Label fx:id="lab1" text="tiempo"></Label>
+            <Label fx:id="lab2" text="intensidad"></Label>
+            <!--<Label fx:id="lab3" text="volumen"></Label>
+            <Label fx:id="lab4" text="ganancia"></Label>-->
+            <Label fx:id="labMsj" text="Configuración"></Label>
+        </children>
+    </AnchorPane>
+    <HBox fx:id="paneBtns">
+        <children>
+            <Button fx:id="add" text="Agregar" onAction="#manejaBtn"></Button>
+            <Button fx:id="muestra" text="Prueba" onAction="#manejaBtn" ></Button>
+           <!-- <Button fx:id="guardar" text="Guardar set" onAction="#manejaBtn" ></Button>-->
+        </children>
+    </HBox>
+    </children>
+</AnchorPane>

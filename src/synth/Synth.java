@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +30,8 @@ public class Synth extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/synth.fxml"));       
         Scene scene = new Scene(root);       
+        scene.getStylesheets().add(getClass().getResource("/css/pruebas.css").toExternalForm());
+        stage.getIcons().add(new Image("/imgs/Synth.png"));
         stage.setScene(scene);
         stage.setTitle("Synth! MD");
         stage.setMaximized(true);

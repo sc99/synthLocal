@@ -10,8 +10,8 @@
 <AnchorPane  id="AnchorPane" style="-fx-background-color:'white'"   prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.synthCtrl">
     <children>
         <ImageView fx:id="logo" />
-        <TextField fx:id="usr" text="Nombre de usuario" />
-        <TextField fx:id="psw" text="Clave de usuario" />
+        <TextField fx:id="usr" promptText="Usuario" />
+        <PasswordField fx:id="psw" promptText="Contraseña" />
         <Button  text="Iniciar Sesion" onAction="#manejaBtn" fx:id="btnSesion" />
         <Button  text="Invitado" onAction="#manejaBtn" fx:id="btnInvitado"/>
         <Label   fx:id="label" />
