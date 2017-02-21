@@ -6,16 +6,12 @@
 package controladores;
 
 
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,30 +19,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToolBar;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javax.sound.midi.MidiSystem;
 import midi.cSequence;
 
@@ -168,7 +155,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
     private Menu mPost;
     @FXML
     private Menu mExtras;
-    //CHINGARSE BOTON GUARDAR SET EN CONFIGEFECTO
+    
     @FXML
     private MenuItem guardaSet; 
     @FXML
@@ -309,7 +296,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
        String extension="";
        FileChooser saver=new FileChooser();  
        if((new File("C:\\Synth")).exists())
-            saver.setInitialDirectory(new File("C:\\Synth"));
+           saver.setInitialDirectory(new File("C:\\Synth"));
        
            saver.setTitle("Guardar archivo");
            FileChooser.ExtensionFilter ext=
@@ -330,11 +317,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
                       aviso(st,"Archivo creado con éxito");
                }else
                    archivoVacio(st,"Extension de archivo inválida");
-           }else{
-               System.out.println("????");
            }
-       
-       
    }
 
    public String [] getNomBtns(){
@@ -685,22 +668,24 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
     @FXML
     public void save(ActionEvent e){
         try{
-            FileChooser choser= new FileChooser();
-            choser.setTitle("Guardar audio");
-            choser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("MID","*.mid")
-              
-            );
-            choser.setInitialDirectory(new File("C:\\Synth"));
-            File config = choser.showSaveDialog((Stage)menu.getScene().getWindow());
-            if(config.getName().endsWith(".mid")){
-                int[] types = MidiSystem.getMidiFileTypes(cSequence.getSequence());
-                MidiSystem.write(cSequence.getSequence(), types[0], config);
-                aviso((Stage)menu.getScene().getWindow(),"Archivo guardado con exito");
+            if(cSequence.getSequence() != null){
+                FileChooser choser= new FileChooser();
+                choser.setTitle("Guardar audio");
+                choser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("MID","*.mid")
+                );
+                choser.setInitialDirectory(new File("C:\\Synth"));
+                File config = choser.showSaveDialog((Stage)menu.getScene().getWindow());
+                if(config != null){
+                    int[] types = MidiSystem.getMidiFileTypes(cSequence.getSequence());
+                    MidiSystem.write(cSequence.getSequence(), types[0], config);
+                    aviso((Stage)menu.getScene().getWindow(),"Archivo guardado con exito");
+                }
             }else{
-                throw new Exception("");
+                doANotification(AlertType.ERROR, "ERROR", "Tu grabacion se encuentra vacía", "Tienes que grabar una pista antes de poder guardarla.");
             }
         }catch(Exception es){
+            es.printStackTrace();
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Mensaje del programa");
             alert.setHeaderText("Error guardando el archivo!");
@@ -708,5 +693,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
                     + "o asegúrese de que ya hay un audio grabado listo para guardarse.");
             alert.showAndWait();
         }
+    }
+    public void doANotification(AlertType type, String title, String header, String text){
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 }

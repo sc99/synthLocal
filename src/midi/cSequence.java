@@ -95,8 +95,6 @@ public class cSequence implements Diccionary{
         sequencer.open();
     }
     public static void playRecord() throws MidiUnavailableException, InvalidMidiDataException{
-        System.out.println("sequence = " + sequence == null ? false : true);
-        System.out.println("sequencer = " + sequencer == null ? false : true);
         if(w == null || !w.isRunning()){
             w = new Walkman(sequence,sequencer,duration);
             w.start();

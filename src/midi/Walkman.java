@@ -15,28 +15,33 @@ import javax.sound.midi.Sequencer;
 public class Walkman extends Thread{
     private Sequence sequence;
     private Sequencer sequencer;
+    private long position;
     private long duration;
     private boolean stop;
+    private boolean pause;
+    private boolean active;
     public Walkman(Sequence sequence, Sequencer sequencer, long duration){
         this.sequence = sequence;
         this.sequencer = sequencer;
         this.duration = duration;
+        active = true;
     }
 
     @Override
     public void run() {
         try{
-            System.out.println("reproduciendo " + sequence.getTickLength());
-            System.out.println("Duration = " + duration);
             sequencer.setSequence(sequence);
             if(!sequencer.isOpen()){
                 sequencer.open();
             }
             sequencer.start();
-            long end = System.currentTimeMillis() + duration;
-            while(System.currentTimeMillis() <= end){
-                if(checkForStop()){
+            while(active){
+                if(pause){
                     sequencer.stop();
+                }
+                if(stop){
+                    sequencer.stop();
+                    active = false;
                 }
             }
             sequencer.stop();
@@ -56,8 +61,5 @@ public class Walkman extends Thread{
     }
     public void kill(){
         this.stop = true;
-    }
-    public boolean checkForStop(){
-        return this.stop;
     }
 }

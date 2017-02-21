@@ -9,7 +9,6 @@
 <AnchorPane style="-fx-background-color:'white'" fx:id="aP" id="AnchorPane"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.tecladoCtrl"   onKeyPressed="#tocarTecla" onKeyReleased="#sueltaTecla">
     <children>
        <!-- <Label fx:id="lab1" text="HAS LLEGADO AL TECLADO" />-->
-        
        <MenuBar fx:id="menu" xmlns:fx="http://javafx.com/fxml/1">
            <Menu fx:id="mArchivo" text="Archivos" >
                <MenuItem fx:id="guardar" text="Guardar audio" onAction="#save"/>
@@ -31,10 +30,10 @@
         </MenuBar>
         <!--<HBox fx:id="teclado">
             <children>-->
-                <ToggleButton fx:id="record"  text="O" onAction="#record"/>
-                <ToggleButton fx:id="pause"  text="||" onAction="#pause"/>
-                <ToggleButton fx:id="stop" text="|=|" onAction="#stop" />
-                <ToggleButton fx:id="play"  text=">" onAction="#play"/>
+                <ToggleButton fx:id="record"  text="" onAction="#record"/>
+                <ToggleButton fx:id="pause"  text="" onAction="#pause"/>
+                <ToggleButton fx:id="stop" text="" onAction="#stop" />
+                <ToggleButton fx:id="play"  text="" onAction="#play"/>
                 <!--<ToggleButton fx:id="Delay" onAction="#manejaEfecto"></ToggleButton>
                 <ToggleButton fx:id="Chorus"></ToggleButton>
                 <ToggleButton fx:id="Reverb"></ToggleButton>
