@@ -35,6 +35,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.midi.MidiSystem;
+import jm.JMC;
 import midi.cSequence;
 
 /**
@@ -42,11 +43,8 @@ import midi.cSequence;
  *
  * @author Alumno
  */
-public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccionary  {
+public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
 
-    
-    
-    
     /**
      * Initializes the controller class.
      */
@@ -56,105 +54,57 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
     private static boolean invitado=false;
     private static boolean mostrar=true;
     public static clases.cEfectos set=new clases.cEfectos();
-    @FXML
-    AnchorPane aP;
-    @FXML
-     Rectangle c1;
-    @FXML
-    Rectangle c1sos;
-    @FXML
-     Rectangle d1;
-    @FXML
-     Rectangle d1sos;
-    @FXML
-     Rectangle e1;
-    @FXML
-     Rectangle f1;
-    @FXML
-    Rectangle f1sos;
-    @FXML
-     Rectangle g1;
-    @FXML
-    Rectangle g1sos;
-    @FXML
-     Rectangle a1;
-    @FXML
-    Rectangle a1sos;
-    @FXML
-     Rectangle b1;
-    
-    @FXML
-     Rectangle c2;
-    @FXML
-    Rectangle c2sos;
-    @FXML
-     Rectangle d2;
-    @FXML
-    Rectangle d2sos;
-    @FXML
-     Rectangle e2;
-    @FXML
-     Rectangle f2;
-    @FXML
-    Rectangle f2sos;
-    @FXML
-     Rectangle g2;
-    @FXML
-    Rectangle g2sos;
-    @FXML
-     Rectangle a2;
-    @FXML
-    Rectangle a2sos;
-    @FXML
-     Rectangle b2;
-    
-    @FXML
-     Rectangle c3;
-    @FXML
-    Rectangle c3sos;
-    @FXML
-     Rectangle d3;
-    @FXML
-    Rectangle d3sos;
-    @FXML
-     Rectangle e3;
-    @FXML
-     Rectangle f3;
-    @FXML
-    Rectangle f3sos;
-    @FXML
-     Rectangle g3;
-    @FXML
-    Rectangle g3sos;
-    @FXML
-     Rectangle a3;
-    @FXML
-    Rectangle a3sos;
-    @FXML
-     Rectangle b3;
-     midi.cMidi mid=new midi.cMidi();
+    @FXML AnchorPane aP;
+    @FXML Rectangle c1;
+    @FXML Rectangle c1sos;
+    @FXML Rectangle d1;
+    @FXML Rectangle d1sos;
+    @FXML Rectangle e1;
+    @FXML Rectangle f1;
+    @FXML Rectangle f1sos;
+    @FXML Rectangle g1;
+    @FXML Rectangle g1sos;
+    @FXML Rectangle a1;
+    @FXML Rectangle a1sos;
+    @FXML Rectangle b1; 
+    @FXML Rectangle c2;
+    @FXML Rectangle c2sos;
+    @FXML Rectangle d2;
+    @FXML Rectangle d2sos;
+    @FXML Rectangle e2;
+    @FXML Rectangle f2;
+    @FXML Rectangle f2sos;
+    @FXML Rectangle g2;
+    @FXML Rectangle g2sos;
+    @FXML Rectangle a2;
+    @FXML Rectangle a2sos;
+    @FXML Rectangle b2;
+    @FXML Rectangle c3;
+    @FXML Rectangle c3sos;
+    @FXML Rectangle d3;
+    @FXML Rectangle d3sos;
+    @FXML Rectangle e3;
+    @FXML Rectangle f3;
+    @FXML Rectangle f3sos;
+    @FXML Rectangle g3;
+    @FXML Rectangle g3sos;
+    @FXML Rectangle a3;
+    @FXML Rectangle a3sos;
+    @FXML Rectangle b3;
+    midi.cMidi mid=new midi.cMidi();
     
 
     private static String [][] arrR=new String[36][2];
     Rectangle [] arrNtas=new Rectangle[36];
-   
     
-    @FXML
-    private MenuItem agregarEf;
-    @FXML 
-    private MenuItem abrirEf;
-    @FXML
-    private MenuItem guardar;
-    @FXML
-    private MenuBar menu;   
-    @FXML
-    private Menu mArchivo;
-    @FXML
-    private Menu mEfectos;
-    @FXML 
-    private Menu mPost;
-    @FXML
-    private Menu mExtras;
+    @FXML private MenuItem agregarEf;
+    @FXML private MenuItem abrirEf;
+    @FXML private MenuItem guardar;
+    @FXML private MenuBar menu;   
+    @FXML private Menu mArchivo;
+    @FXML private Menu mEfectos;
+    @FXML private Menu mPost;
+    @FXML private Menu mExtras;
     
     @FXML
     private MenuItem guardaSet; 
@@ -390,10 +340,8 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
     public void tocarTecla(KeyEvent e){
         String idTcla=getNotaTocada(e.getText());
         int xId=0;
-        //System.out.println(e.getText());
         if(e.getText().equals(" "))
         {
-            //System.out.println("ASFD");
             cController.soft=true;
         }
         for(int i=0;i<arrNtas.length;i++){
@@ -402,9 +350,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
                Paint efecto=idTcla.endsWith("s")?Color.PURPLE:Color.LIGHTCYAN;
                //System.out.println("Tum");
                if(!arrNtas[i].getFill().equals(efecto)){
-                   mid.addToQueue(i+C3,1); 
-                   
-                       
+                   mid.addToQueue(i+C3,1);
                }
                arrNtas[i].setFill(efecto); 
                
@@ -508,8 +454,6 @@ public class tecladoCtrl extends synthCtrl implements Initializable,midi.Diccion
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
         Image cho=new Image(getClass().getResourceAsStream("/imgs/Chorus.png"));   
         ImageView s=new ImageView(cho);
         s.setFitWidth(lPant/12);

@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?> 
+<?import javafx.scene.image.ImageView?>
 
-<AnchorPane  id="AnchorPane" style="-fx-background-color:'white'"   prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.synthCtrl">
+<AnchorPane id="AnchorPane" prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color:'white'" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.synthCtrl">
     <children>
-        <ImageView fx:id="logo" />
-        <TextField fx:id="usr" promptText="Usuario" />
-        <PasswordField fx:id="psw" promptText="Contraseña" />
-        <Button  text="Iniciar Sesion" onAction="#manejaBtn" fx:id="btnSesion" />
-        <Button  text="Invitado" onAction="#manejaBtn" fx:id="btnInvitado"/>
-        <Label   fx:id="label" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                    <ImageView fx:id="logo" fitHeight="300.0" fitWidth="460.0">
+                     <image>
+                        <Image url="@../imgs/Synth.jpg" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+                     <children>
+                          <TextField fx:id="usr" onKeyReleased="#validaEspeciales" promptText="Usuario" />
+                          <PasswordField fx:id="psw" promptText="Contraseña" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                           <children>
+                                <Button fx:id="btnSesion" onAction="#manejaBtn" text="Iniciar Sesion" />
+                                <Button fx:id="btnInvitado" onAction="#manejaBtn" text="Invitado" />
+                           </children>
+                        </HBox>
+                          <Label fx:id="label" />
+                     </children>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </FlowPane>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+         </padding>
+      </VBox>
     </children>
 </AnchorPane>

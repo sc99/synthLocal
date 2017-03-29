@@ -26,6 +26,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -67,7 +68,6 @@ public class synthCtrl implements Initializable {
         return valida;
     }
     protected void salir(Stage st,WindowEvent e){
-        
         Alert alert = new Alert(AlertType.CONFIRMATION);
         st.getIcons().add(new Image("/imgs/Synth.png"));
         alert.setTitle("Confirmacion");
@@ -86,7 +86,6 @@ public class synthCtrl implements Initializable {
         }
     }
     protected void cerrarTeclado(Stage st,WindowEvent e){
-        
         Alert alert = new Alert(AlertType.CONFIRMATION);
         st.getIcons().add(new Image("/imgs/Synth.png"));
         alert.setTitle("Confirmacion");
@@ -154,9 +153,6 @@ public class synthCtrl implements Initializable {
             }else
                 System.out.println("Vacio");
         return valido;
-    }
-    public void setTeclado(){
-        
     }
      private void avisoCfg(Stage st,String url){
         Alert av=new Alert(AlertType.INFORMATION);
@@ -267,50 +263,19 @@ public class synthCtrl implements Initializable {
         }
     }
     }
-    
-    public void configComponentes(){
-        Image l=new Image("imgs/Synth.png");
-        logo.setImage(l);
-        logo.setFitWidth(lPant/3);
-        logo.setFitHeight(aPant/2);
-        logo.setLayoutX(lPant/6);
-        logo.setLayoutY(aPant/5);
-        logo.maxWidth(lPant/3);
-        logo.maxHeight(aPant/2);
-        logo.minWidth(lPant/4);
-        logo.minHeight(aPant/3);
-        usr.setLayoutX(lPant/12*7);
-        usr.setLayoutY(aPant/16*6);
-        usr.setMinSize(lPant/4,aPant/32);
-        usr.setMaxSize(lPant/3,aPant/16);
-        psw.setMinSize(lPant/4,aPant/32);
-        psw.setMaxSize(lPant/3,aPant/16);
-        psw.setLayoutX(lPant/12*7);
-        psw.setLayoutY(aPant/16*7);
-        btnSesion.setLayoutX(lPant/96*59);
-        btnSesion.setLayoutY(aPant/16*9);
-        btnSesion.setMaxSize(lPant/8,aPant/16);
-        btnSesion.setMinSize(lPant/16,aPant/24);
-        btnInvitado.setMaxSize(lPant/8,aPant/16);
-        btnInvitado.setMinSize(lPant/16,aPant/24);
-        btnInvitado.setLayoutX(lPant/12*9);
-        btnInvitado.setLayoutY(aPant/16*9);
-        label.setLayoutX(lPant/32*15);
-        label.setLayoutY(aPant/4*3);
-        label.setMaxSize(lPant/3,aPant/6);
-        label.setMinSize(lPant/4,aPant/8);
-    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-        configComponentes();
         // TODO
-    }    
+    }
 
+    @FXML public void validaEspeciales(KeyEvent e){
+        utilities.Validation.noSpecial((TextField)e.getSource());
+    }
+    
     private static String getCuenta(java.lang.String correo, java.lang.String contra) {
-
         ws.WsLocal_Service service = new ws.WsLocal_Service();
         ws.WsLocal port = service.getWsLocalPort();
-            return port.getCuenta(correo,contra);
+        return port.getCuenta(correo, contra);
     }
+    
 }
