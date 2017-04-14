@@ -195,8 +195,9 @@ public class synthCtrl implements Initializable {
                     clases.cCifrado enc=new clases.cCifrado();
                     correo=enc.Encriptar(correo);
                     contra=enc.Encriptar(contra);
-                    id=getCuenta(correo, contra);
-                    int validId = Integer.parseInt(id);
+//                    id=getCuenta(correo, contra);
+//                    int validId = Integer.parseInt(id);
+                    int validId = 1;
                     if(validId == 0){
                         label.setText("CORREO O CONTRASEÑA INCORRRECTOS");
                     }else{
@@ -272,10 +273,10 @@ public class synthCtrl implements Initializable {
         utilities.Validation.noSpecial((TextField)e.getSource());
     }
     
-    private static String getCuenta(java.lang.String correo, java.lang.String contra) {
-        ws.WsLocal_Service service = new ws.WsLocal_Service();
-        ws.WsLocal port = service.getWsLocalPort();
-        return port.getCuenta(correo, contra);
-    }
+//    private static String getCuenta(java.lang.String correo, java.lang.String contra) {
+//        ws.WsLocal_Service service = new ws.WsLocal_Service();
+//        ws.WsLocal port = service.getWsLocalPort();
+//        return port.getCuenta(correo, contra);
+//    }
     
 }

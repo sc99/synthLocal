@@ -6,11 +6,19 @@
 package controladores;
 
 
+import inst.AMInst;
+import inst.AMNoiseInst;
+import inst.ResSawInst;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +44,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.midi.MidiSystem;
 import jm.JMC;
+import jm.audio.Instrument;
+import jm.audio.RTMixer;
+import static jm.constants.Durations.WHOLE_NOTE;
+import static jm.constants.Volumes.FF;
+import jm.music.data.Note;
+import jm.music.rt.RTLine;
+import jmusic.MyInstrument;
+import jmusic.MyTempLine;
 import midi.cSequence;
 
 /**
@@ -134,6 +150,15 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     public  static ToggleButton Reverb=new ToggleButton();
 
     public  static ToggleButton Tremolo=new ToggleButton();
+    
+    public static Map<Integer,RTMixer> statusMixers = new HashMap();
+    //TRUE = DISPONIBLE
+    //FALSE = NO DISPONIBLE
+    private Map<String,Integer> conf = new HashMap();
+    //ASIGNACION TECLA - NOTA
+    public static SimpleIntegerProperty suich;
+    public static Map<Integer,Integer> relNoteMixer = new HashMap();
+    private Instrument[] ins;
     
    public static boolean getInvitado(){
        return invitado;
@@ -340,24 +365,23 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     public void tocarTecla(KeyEvent e){
         String idTcla=getNotaTocada(e.getText());
         int xId=0;
-        if(e.getText().equals(" "))
-        {
-            cController.soft=true;
-        }
         for(int i=0;i<arrNtas.length;i++){
-            if(arrNtas[i].getId().equals(idTcla))
-            {           
+            if(arrNtas[i].getId().equals(idTcla)){           
                Paint efecto=idTcla.endsWith("s")?Color.PURPLE:Color.LIGHTCYAN;
-               //System.out.println("Tum");
                if(!arrNtas[i].getFill().equals(efecto)){
-                   mid.addToQueue(i+C3,1);
+                    int position = statusMixers.keySet().size();
+                    int nota = i + C3;
+                    if(relNoteMixer.get(nota) == null){
+                        RTLine line = new MyTempLine(ins,new Note(nota,WHOLE_NOTE,FF),position);
+                        RTMixer mixer = new RTMixer(new RTLine[]{line});
+                        statusMixers.put(position,mixer);
+                        relNoteMixer.put(nota,position);
+                        mixer.begin();
+                    }
                }
-               arrNtas[i].setFill(efecto); 
-               
+               arrNtas[i].setFill(efecto);
             }
-                            
         }
-        
     }
     @FXML
    public void sueltaTecla(KeyEvent e){
@@ -371,10 +395,18 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
         for(int i=0;i<arrNtas.length;i++){
             if(arrNtas[i].getId().equals(idTcla))
             {
-               Paint efecto=idTcla.endsWith("s")?Color.BLACK:Color.WHITE;
-               //System.out.println("Tum");
-               arrNtas[i].setFill(efecto);
-                mid.addToQueue(i+C3,0);
+                Paint efecto=idTcla.endsWith("s")?Color.BLACK:Color.WHITE;
+                //System.out.println("Tum");
+                arrNtas[i].setFill(efecto);
+                int note = i + C3;
+                if(relNoteMixer.get(note) != null){
+                    int mixer = relNoteMixer.get(note);
+                    if(statusMixers.get(mixer)!=null){
+                        statusMixers.get(mixer).stop();
+                        statusMixers.remove(mixer);
+                    }
+                    relNoteMixer.remove(note);
+                }
             }
             
         }
@@ -570,7 +602,21 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
         btnsNoVisibles(true);
         setBorderR("-fx-border-radius: 19; -fx-border-color: transparent");
        
-
+        suich = new SimpleIntegerProperty(-1);
+        suich.addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                statusMixers.get(newValue.intValue()).stop();
+                statusMixers.remove(newValue.intValue());
+                suich.removeListener(this);
+                suich.set(-1);
+                suich.addListener(this);
+            }
+        });
+        ins = new Instrument[10];
+        for(Instrument i:ins){
+            i = new MyInstrument(44100);
+        }
     }  
     @FXML
     public void record(ActionEvent e){
@@ -644,5 +690,33 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
         alert.setHeaderText(header);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+    @FXML
+    public void activaNota(KeyEvent e){
+        if(conf.get(e.getCode().getName()) != null){
+            int position = statusMixers.keySet().size();
+            int nota = conf.get(e.getCode().getName());
+            if(relNoteMixer.get(nota) == null){
+                Instrument[] in = new Instrument[1];
+                in[0] = new MyInstrument(44100);
+                RTLine line = new MyTempLine(in,new Note(conf.get(e.getCode().getName()),WHOLE_NOTE,FF),position);
+                RTMixer mixer = new RTMixer(new RTLine[]{line});
+                statusMixers.put(position,mixer);
+                relNoteMixer.put(nota,position);
+                mixer.begin();
+            }
+        }
+    }
+    @FXML
+    public void mataNota(KeyEvent e){
+        int note = conf.get(e.getCode().getName());
+        if(relNoteMixer.get(note) != null){
+            int mixer = relNoteMixer.get(note);
+            if(statusMixers.get(mixer)!=null){
+                statusMixers.get(mixer).stop();
+                statusMixers.remove(mixer);
+            }
+            relNoteMixer.remove(note);
+        }
     }
 }

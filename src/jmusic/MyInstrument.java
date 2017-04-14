@@ -30,12 +30,23 @@ public class MyInstrument extends Instrument{
     private Pluck pluck;
     private Noise noise;
     private Comb comb;
-    public MyInstrument(){
-        
+    
+    private int sampleRate;
+    private int channels;
+    public MyInstrument(int sampleRate){
+        this.sampleRate = sampleRate;
+        this.channels = 1;
     }
     @Override
     public void createChain() throws AOException {
-        
+        oscillator = new Oscillator(this, Oscillator.SINE_WAVE, this.sampleRate, this.channels);
+        filter = new Filter(oscillator, 10000, Filter.LOW_PASS);
+        envelope = new Envelope(filter, 
+             new double[] {1.0, 0.2, 0.5, 0.8, 0.3, 1.0, 0.0});
+        volume = new Volume(envelope);
+        stereopan = new StereoPan(volume);
     }
-    
+    public void setController(double[] controlValues){
+        filter.setCutOff(controlValues[0]);
+    }
 }
