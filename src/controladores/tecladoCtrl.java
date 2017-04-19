@@ -28,14 +28,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -159,6 +164,29 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     public static SimpleIntegerProperty suich;
     public static Map<Integer,Integer> relNoteMixer = new HashMap();
     private Instrument[] ins;
+    
+    @FXML private ComboBox cmbComponentes;
+    @FXML private VBox caracteristicas;
+    @FXML private CheckBox chkFiltro;
+    @FXML private Slider sldFiltro;
+    @FXML private Label lblFiltro;
+    @FXML private CheckBox chkEnvoltura;
+    @FXML private Slider sldEnvoltura1;
+    @FXML private Slider sldEnvolutra2;
+    @FXML private Slider sldEnvoltura3;
+    @FXML private Slider sldEnvolutra4;
+    @FXML private Slider sldEnvoltura5;
+    @FXML private Label lblEnvoltura1;
+    @FXML private Label lblEnvoltura2;
+    @FXML private Label lblEnvoltura3;
+    @FXML private Label lblEnvoltura4;
+    @FXML private Label lblEnvoltura5;
+    @FXML private CheckBox chkVolumen;
+    @FXML private Slider sldVolumen;
+    @FXML private Label lblVolumen;
+    @FXML private CheckBox chkPaneo;
+    @FXML private Slider sldPaneo;
+    @FXML private Label lblPaneo;
     
    public static boolean getInvitado(){
        return invitado;
@@ -541,6 +569,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
         Tremolo.setMinSize(lPant/12,lPant/12);
         Tremolo.setLayoutX(Reverb.getLayoutX()+Reverb.getWidth()+lPant/16*14/5);
         Tremolo.setLayoutY(aPant/8);
+        
+        Chorus.setManaged(false);
+        PitchShift.setManaged(false);
+        Delay.setManaged(false);
+        Reverb.setManaged(false);
+        Tremolo.setManaged(false);
         
         aP.getChildren().addAll(Chorus,Delay,Reverb,PitchShift,Tremolo);
         Rectangle [] aR={c1,c1sos,d1,d1sos,e1,f1,f1sos,g1,g1sos,a1,a1sos,b1,

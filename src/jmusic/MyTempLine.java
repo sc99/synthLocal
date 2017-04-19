@@ -30,8 +30,7 @@ public class MyTempLine extends RTLine implements JMC{
             tecladoCtrl.suich.set(position);
             this.pause();
         }
-        Note note = new Note(this.note.getPitch(),this.note.getRhythmValue(), this.note.getDynamic());
-        System.out.println("pitch: " + this.note.getPitch() + "; Rhythm: " + this.note.getRhythmValue());
+        Note note = new Note(this.note.getPitch(),this.note.getRhythmValue(), this.note.getDynamic(), this.note.getPan());
         this.note = new Note(REST,REST);
         return note;
     }

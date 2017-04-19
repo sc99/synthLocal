@@ -1,83 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane style="-fx-background-color:'white'" fx:id="aP" id="AnchorPane"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.tecladoCtrl"   onKeyPressed="#tocarTecla" onKeyReleased="#sueltaTecla">
+<AnchorPane id="AnchorPane" fx:id="aP" onKeyPressed="#tocarTecla" onKeyReleased="#sueltaTecla" prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color:'white'" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controladores.tecladoCtrl">
     <children>
        <!-- <Label fx:id="lab1" text="HAS LLEGADO AL TECLADO" />-->
        <MenuBar fx:id="menu" xmlns:fx="http://javafx.com/fxml/1">
-           <Menu fx:id="mArchivo" text="Archivos" >
-               <MenuItem fx:id="guardar" text="Guardar audio" onAction="#save"/>
-               <MenuItem fx:id="guardaSet" text="Guardar set" onAction="#manejaMenu"/>
-           </Menu>
-            <Menu fx:id="mEfectos" text="Efectos" >
-                <MenuItem fx:id="agregarEf" text="Agregar efecto" onAction="#manejaMenu" />
-                <MenuItem fx:id="abrirEf" text="Abrir efecto" onAction="#manejaMenu"/>
-            </Menu>
-            <Menu fx:id="mPost" text="Web" >
-                <MenuItem fx:id="postea" text="Publicar" onAction="#manejaMenu" />
-            </Menu>
-            <Menu fx:id="mExtras" text="Más">
-                <MenuItem fx:id="inf" text="Información aplicación" onAction="#manejaMenu" />
-                <MenuItem fx:id="configTecl" text="Configuración Teclado" onAction="#manejaMenu"/>
-                <MenuItem fx:id="mostrarTecl" text="Ver teclas" onAction="#manejaMenu" ></MenuItem>
-            </Menu>
+          <menus>
+              <Menu fx:id="mArchivo" text="Archivos">
+                 <items>
+                     <MenuItem fx:id="guardar" onAction="#save" text="Guardar audio" />
+                     <MenuItem fx:id="guardaSet" onAction="#manejaMenu" text="Guardar set" />
+                 </items>
+              </Menu>
+               <Menu fx:id="mEfectos" text="Efectos">
+                  <items>
+                      <MenuItem fx:id="agregarEf" onAction="#manejaMenu" text="Agregar efecto" />
+                      <MenuItem fx:id="abrirEf" onAction="#manejaMenu" text="Abrir efecto" />
+                  </items>
+               </Menu>
+               <Menu fx:id="mPost" text="Web">
+                  <items>
+                      <MenuItem fx:id="postea" onAction="#manejaMenu" text="Publicar" />
+                  </items>
+               </Menu>
+               <Menu fx:id="mExtras" text="Más">
+                  <items>
+                      <MenuItem fx:id="inf" onAction="#manejaMenu" text="Información aplicación" />
+                      <MenuItem fx:id="configTecl" onAction="#manejaMenu" text="Configuración Teclado" />
+                      <MenuItem fx:id="mostrarTecl" onAction="#manejaMenu" text="Ver teclas" />
+                  </items>
+               </Menu>
+          </menus>
             
         </MenuBar>
         <!--<HBox fx:id="teclado">
             <children>-->
-                <ToggleButton fx:id="record"  text="" onAction="#record"/>
-                <ToggleButton fx:id="pause"  text="" onAction="#pause"/>
-                <ToggleButton fx:id="stop" text="" onAction="#stop" />
-                <ToggleButton fx:id="play"  text="" onAction="#play"/>
+                <ToggleButton fx:id="record" onAction="#record" text="" />
+                <ToggleButton fx:id="pause" onAction="#pause" text="" />
+                <ToggleButton fx:id="stop" onAction="#stop" text="" />
+                <ToggleButton fx:id="play" onAction="#play" text="" />
                 <!--<ToggleButton fx:id="Delay" onAction="#manejaEfecto"></ToggleButton>
                 <ToggleButton fx:id="Chorus"></ToggleButton>
                 <ToggleButton fx:id="Reverb"></ToggleButton>
                 <ToggleButton fx:id="PitchShift"></ToggleButton>
                 <ToggleButton fx:id="Tremolo"></ToggleButton>-->
-               <Rectangle fx:id="c1"/>
-               <Rectangle fx:id="d1"/>
-               <Rectangle fx:id="e1"/>
-               <Rectangle fx:id="f1"/>
-               <Rectangle fx:id="g1"/>
-               <Rectangle fx:id="a1"/>
-               <Rectangle fx:id="b1"/>
+               <Rectangle fx:id="c1" />
+               <Rectangle fx:id="d1" />
+               <Rectangle fx:id="e1" />
+               <Rectangle fx:id="f1" />
+               <Rectangle fx:id="g1" />
+               <Rectangle fx:id="a1" />
+               <Rectangle fx:id="b1" />
                
-               <Rectangle fx:id="c2"/>
-               <Rectangle fx:id="d2"/>
-               <Rectangle fx:id="e2"/>
-               <Rectangle fx:id="f2"/>
-               <Rectangle fx:id="g2"/>
-               <Rectangle fx:id="a2"/>
-               <Rectangle fx:id="b2"/>
+               <Rectangle fx:id="c2" />
+               <Rectangle fx:id="d2" />
+               <Rectangle fx:id="e2" />
+               <Rectangle fx:id="f2" />
+               <Rectangle fx:id="g2" />
+               <Rectangle fx:id="a2" />
+               <Rectangle fx:id="b2" />
                
-               <Rectangle fx:id="c3"/>
-               <Rectangle fx:id="d3"/>
-               <Rectangle fx:id="e3"/>
-               <Rectangle fx:id="f3"/>
-               <Rectangle fx:id="g3"/>
-               <Rectangle fx:id="a3"/>
-               <Rectangle fx:id="b3"/>
+               <Rectangle fx:id="c3" />
+               <Rectangle fx:id="d3" />
+               <Rectangle fx:id="e3" />
+               <Rectangle fx:id="f3" />
+               <Rectangle fx:id="g3" />
+               <Rectangle fx:id="a3" />
+               <Rectangle fx:id="b3" />
                
-               <Rectangle fx:id="c1sos"/>
-               <Rectangle fx:id="d1sos"/>
-               <Rectangle fx:id="f1sos"/>
-               <Rectangle fx:id="g1sos"/>
-               <Rectangle fx:id="a1sos"/>
-               <Rectangle fx:id="c2sos"/>
-               <Rectangle fx:id="d2sos"/>
-               <Rectangle fx:id="f2sos"/>
-               <Rectangle fx:id="g2sos"/>
-               <Rectangle fx:id="a2sos"/>
-               <Rectangle fx:id="c3sos"/>
-               <Rectangle fx:id="d3sos"/>
-               <Rectangle fx:id="f3sos"/>
-               <Rectangle fx:id="g3sos"/>
-               <Rectangle fx:id="a3sos"/>
+               <Rectangle fx:id="c1sos" />
+               <Rectangle fx:id="d1sos" />
+               <Rectangle fx:id="f1sos" />
+               <Rectangle fx:id="g1sos" />
+               <Rectangle fx:id="a1sos" />
+               <Rectangle fx:id="c2sos" />
+               <Rectangle fx:id="d2sos" />
+               <Rectangle fx:id="f2sos" />
+               <Rectangle fx:id="g2sos" />
+               <Rectangle fx:id="a2sos" />
+               <Rectangle fx:id="c3sos" />
+               <Rectangle fx:id="d3sos" />
+               <Rectangle fx:id="f3sos" />
+               <Rectangle fx:id="g3sos" />
+               <Rectangle fx:id="a3sos" />
+      <VBox layoutX="147.0" layoutY="56.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Componente Principal" wrapText="true" />
+                        <ComboBox fx:id="cmbComponentes" prefWidth="150.0" promptText="Componentes" />
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="caracteristicas" text="Caracteristicas" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <CheckBox fx:id="chkFiltro" mnemonicParsing="false" text="Filtro" />
+                        <Slider fx:id="sldFiltro" blockIncrement="1.0" max="10000.0" min="100.0" minHeight="100.0" orientation="VERTICAL" value="5050.0" />
+                        <Label fx:id="lblFiltro" text="100" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <CheckBox fx:id="chkEnvoltura" mnemonicParsing="false" text="Envoltura" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Slider fx:id="sldEnvoltura1" max="1.0" minHeight="100.0" orientation="VERTICAL" value="0.5" />
+                                    <Label fx:id="lblEnvoltura1" text="0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Slider fx:id="sldEnvoltura2" max="1.0" orientation="VERTICAL" value="0.5" />
+                                    <Label fx:id="lblEnvoltura2" text="0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Slider fx:id="sldEnvoltura3" max="1.0" orientation="VERTICAL" value="0.5" />
+                                    <Label fx:id="lblEnvoltura3" text="0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Slider fx:id="sldEnvoltura4" max="1.0" orientation="VERTICAL" value="0.5" />
+                                    <Label fx:id="lblEnvoltura4" text="0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Slider fx:id="sldEnvoltura5" max="1.0" orientation="VERTICAL" value="0.5" />
+                                    <Label fx:id="lblEnvoltura5" text="0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <CheckBox fx:id="chkVolumen" mnemonicParsing="false" text="Volumen" />
+                        <Slider fx:id="sldVolumen" orientation="VERTICAL" />
+                        <Label fx:id="lblVolumen" text="0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <CheckBox fx:id="chkPaneo" mnemonicParsing="false" text="Paneo" />
+                        <Slider fx:id="sldPaneo" orientation="VERTICAL" />
+                        <Label fx:id="lblPaneo" text="0" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
           <!-- </children>
         </HBox> -->
     </children>
