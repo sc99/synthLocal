@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="aP" onKeyPressed="#tocarTecla" onKeyReleased="#sueltaTecla" prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color:'white'" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controladores.tecladoCtrl">
+<AnchorPane id="AnchorPane" fx:id="aP" onKeyPressed="#tocarTecla" onKeyReleased="#sueltaTecla" prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color:'white'" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.tecladoCtrl">
     <children>
        <!-- <Label fx:id="lab1" text="HAS LLEGADO AL TECLADO" />-->
        <MenuBar fx:id="menu" xmlns:fx="http://javafx.com/fxml/1">
@@ -97,7 +97,7 @@
                      <children>
                         <Label text="Componente Principal" wrapText="true" />
                         <ComboBox fx:id="cmbComponentes" prefWidth="150.0" promptText="Componentes" />
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                        <VBox fx:id="contComponentes" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                            <children>
                               <Label fx:id="caracteristicas" text="Caracteristicas" />
                            </children>
@@ -108,7 +108,7 @@
                      <children>
                         <CheckBox fx:id="chkFiltro" mnemonicParsing="false" text="Filtro" />
                         <Slider fx:id="sldFiltro" blockIncrement="1.0" max="10000.0" min="100.0" minHeight="100.0" orientation="VERTICAL" value="5050.0" />
-                        <Label fx:id="lblFiltro" text="100" />
+                        <Label fx:id="lblFiltro" text="5050" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
@@ -119,31 +119,31 @@
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Slider fx:id="sldEnvoltura1" max="1.0" minHeight="100.0" orientation="VERTICAL" value="0.5" />
-                                    <Label fx:id="lblEnvoltura1" text="0" />
+                                    <Label fx:id="lblEnvoltura1" text="0.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Slider fx:id="sldEnvoltura2" max="1.0" orientation="VERTICAL" value="0.5" />
-                                    <Label fx:id="lblEnvoltura2" text="0" />
+                                    <Label fx:id="lblEnvoltura2" text="0.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Slider fx:id="sldEnvoltura3" max="1.0" orientation="VERTICAL" value="0.5" />
-                                    <Label fx:id="lblEnvoltura3" text="0" />
+                                    <Label fx:id="lblEnvoltura3" text="0.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Slider fx:id="sldEnvoltura4" max="1.0" orientation="VERTICAL" value="0.5" />
-                                    <Label fx:id="lblEnvoltura4" text="0" />
+                                    <Label fx:id="lblEnvoltura4" text="0.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Slider fx:id="sldEnvoltura5" max="1.0" orientation="VERTICAL" value="0.5" />
-                                    <Label fx:id="lblEnvoltura5" text="0" />
+                                    <Label fx:id="lblEnvoltura5" text="0.500" />
                                  </children>
                               </VBox>
                            </children>
@@ -153,14 +153,14 @@
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <CheckBox fx:id="chkVolumen" mnemonicParsing="false" text="Volumen" />
-                        <Slider fx:id="sldVolumen" orientation="VERTICAL" />
+                        <Slider fx:id="sldVolumen" blockIncrement="0.1" majorTickUnit="1.0" max="1.0" minorTickCount="9" orientation="VERTICAL" showTickMarks="true" snapToTicks="true" value="0.5" />
                         <Label fx:id="lblVolumen" text="0" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <CheckBox fx:id="chkPaneo" mnemonicParsing="false" text="Paneo" />
-                        <Slider fx:id="sldPaneo" orientation="VERTICAL" />
+                        <Slider fx:id="sldPaneo" blockIncrement="0.1" majorTickUnit="1.0" max="1.0" minorTickCount="9" orientation="VERTICAL" showTickMarks="true" snapToTicks="true" value="0.5" />
                         <Label fx:id="lblPaneo" text="0" />
                      </children>
                   </VBox>

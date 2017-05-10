@@ -271,12 +271,9 @@ public class ConfigEfecto extends synthCtrl implements Initializable {
                     lab1.setText("Retraso");
                     sDelay = getSlider(0,1,0,1,0.25,0.125);
                     sDelay.setSnapToTicks(false);
-                    sDelay.valueProperty().addListener(new ChangeListener<Number>(){
-                        @Override
-                        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                            System.out.println((int)(newValue.doubleValue()*1000000000));
-                            setControllerValues("DD",(int)(newValue.doubleValue()*1000000000));
-                        }
+                    sDelay.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+                        System.out.println((int)(newValue.doubleValue()*1000));
+                        setControllerValues("DD",(int)(newValue.doubleValue()*1000));
                     });
                     sDelay.setLayoutX(lPant/8);
                     sDelay.setLayoutY(aPant/32*4);

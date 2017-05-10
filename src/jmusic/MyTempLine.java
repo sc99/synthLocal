@@ -6,6 +6,7 @@
 package jmusic;
 
 import controladores.tecladoCtrl;
+import static controladores.tecladoCtrl.statusMixers;
 import jm.JMC;
 import jm.audio.Instrument;
 import jm.music.data.Note;
@@ -27,8 +28,9 @@ public class MyTempLine extends RTLine implements JMC{
     @Override
     public Note getNextNote() {
         if(this.note.getPitch() == REST){
-            tecladoCtrl.suich.set(position);
             this.pause();
+            if(statusMixers.get(position) != null)statusMixers.get(this.position).stop();
+            statusMixers.remove(this.position);
         }
         Note note = new Note(this.note.getPitch(),this.note.getRhythmValue(), this.note.getDynamic(), this.note.getPan());
         this.note = new Note(REST,REST);

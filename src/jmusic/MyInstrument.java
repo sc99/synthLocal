@@ -7,6 +7,7 @@ package jmusic;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.beans.property.SimpleDoubleProperty;
 import jm.audio.AOException;
 import jm.audio.AudioObject;
 import jm.audio.Instrument;
@@ -62,15 +63,16 @@ public class MyInstrument extends Instrument{
         public static final int FILTER_TYPE = 8;
     public static final int ENVELOPE = 9;
         public static final int ENVELOPE_VALUE = 10;
-    public static final int VOLUME = 9;
-        public static final int VOLUME_VALUE = 10;
+    public static final int VOLUME = 11;
+        public static final int VOLUME_VALUE = 12;
     
     //Map que asigna valores a cada uno de los objetos de audio
     private Map<Integer,Map<Integer,Object>> controller;
     
-    public MyInstrument(int sampleRate){
+    public MyInstrument(int sampleRate, Map<Integer,Map<Integer,Object>> controller){
         this.sampleRate = 44100;
         this.channels = 2;
+        this.controller = controller;
     }
     @Override
     public void createChain() throws AOException {
@@ -97,7 +99,7 @@ public class MyInstrument extends Instrument{
         AudioObject next = null;
         if(controller.get(FILTER) != null){
             Map<Integer,Object> parameters = controller.get(FILTER);
-            filter = new Filter(first,(Double)parameters.get(FILTER_CUTOFF),(Integer)parameters.get(FILTER_TYPE));
+            filter = new Filter(first,((SimpleDoubleProperty)parameters.get(FILTER_CUTOFF)).get(),(Integer)parameters.get(FILTER_TYPE));
             next = filter;
         }
         if(controller.get(ENVELOPE) != null){
@@ -107,7 +109,7 @@ public class MyInstrument extends Instrument{
         }
         if(controller.get(VOLUME) != null){
             Map<Integer,Object> parameters = controller.get(VOLUME);
-            volume = new Volume(next == null ? first : next, (Double)parameters.get(VOLUME_VALUE));
+            volume = new Volume(next == null ? first : next, ((SimpleDoubleProperty)parameters.get(VOLUME_VALUE)).get());
             next = envelope;
         }
     }
@@ -115,7 +117,7 @@ public class MyInstrument extends Instrument{
     public void setController(double[] values){
         if(controller.get(FILTER) != null){
             Map<Integer,Object> parameters = controller.get(ENVELOPE);
-            filter.setCutOff((Double)parameters.get(FILTER_CUTOFF));
+            filter.setCutOff(((SimpleDoubleProperty)parameters.get(FILTER_CUTOFF)).get());
         }
         if(controller.get(ENVELOPE) != null){
             Map<Integer,Object> parameters = controller.get(ENVELOPE);
