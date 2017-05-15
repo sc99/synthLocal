@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controladores.ConectarMovil">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="470.0" prefWidth="571.0">
+         <children>
+            <Label layoutX="13.0" layoutY="14.0" prefHeight="97.0" prefWidth="546.0" text="Para conectar tu dispositivo movil usando nuestra aplicacion Android deberás hacer click en la opcion &quot;Conectar&quot; de la aplicacion Movil. Posteriormente, introduce la direccion IP que aparece debajo y haz click en &quot;Conectar&quot;.  Si todo va bien veras un mensaje que confirmara la conexion." wrapText="true" />
+            <Label id="estatus" fx:id="estatus" alignment="CENTER" layoutX="196.0" layoutY="119.0" prefHeight="17.0" prefWidth="180.0" text="Listo para iniciar conexion" />
+            <Separator layoutX="1.0" layoutY="150.0" prefHeight="8.0" prefWidth="571.0" />
+            <Label fx:id="IP" layoutX="148.0" layoutY="202.0" prefHeight="51.0" prefWidth="276.0">
+               <font>
+                  <Font name="Century Gothic" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="255.0" layoutY="169.0" text="Direccion IP" />
+            <Button id="hecho" fx:id="hecho" layoutX="245.0" layoutY="411.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="82.0" text="Hecho" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

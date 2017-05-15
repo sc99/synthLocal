@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="cPane" id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ConfigTecController">
+
+    
+    <Label fx:id="c1" ></Label>
+    <Label fx:id="c1sos" ></Label>
+    <Label fx:id="d1" ></Label>
+    <Label fx:id="d1sos" ></Label>
+    <Label fx:id="e1" ></Label>
+    <Label fx:id="f1" ></Label>
+    <Label fx:id="f1sos" ></Label>
+    <Label fx:id="g1" ></Label>
+    <Label fx:id="g1sos" ></Label>
+    <Label fx:id="a1" ></Label>
+    <Label fx:id="a1sos"></Label>
+    <Label fx:id="b1" ></Label>
+    
+    <Label fx:id="c2" ></Label>
+    <Label fx:id="c2sos" ></Label>
+    <Label fx:id="d2" ></Label>
+    <Label fx:id="d2sos" ></Label>
+    <Label fx:id="e2" ></Label>
+    <Label fx:id="f2" ></Label>
+    <Label fx:id="f2sos" ></Label>
+    <Label fx:id="g2" ></Label>
+    <Label fx:id="g2sos" ></Label>
+    <Label fx:id="a2" ></Label>
+    <Label fx:id="a2sos"></Label>
+    <Label fx:id="b2" ></Label>
+    
+    <Label fx:id="c3" ></Label>
+    <Label fx:id="c3sos" ></Label>
+    <Label fx:id="d3" ></Label>
+    <Label fx:id="d3sos" ></Label>
+    <Label fx:id="e3" ></Label>
+    <Label fx:id="f3" ></Label>
+    <Label fx:id="f3sos" ></Label>
+    <Label fx:id="g3" ></Label>
+    <Label fx:id="g3sos" ></Label>
+    <Label fx:id="a3" ></Label>
+    <Label fx:id="a3sos"></Label>
+    <Label fx:id="b3" ></Label>
+    
+     <TextField fx:id="txt1" ></TextField>
+     <TextField fx:id="txt2" ></TextField>
+    <TextField fx:id="txt3" ></TextField>
+     <TextField fx:id="txt4" ></TextField>
+     <TextField fx:id="txt5" ></TextField>
+     <TextField fx:id="txt6" ></TextField>
+     <TextField fx:id="txt7" ></TextField>
+     <TextField fx:id="txt8" ></TextField>
+     <TextField fx:id="txt9" ></TextField>
+     <TextField fx:id="txt10" ></TextField>
+     <TextField fx:id="txt11" ></TextField>
+     <TextField fx:id="txt12" ></TextField>
+             
+     <TextField fx:id="txt13" ></TextField>
+     <TextField fx:id="txt14" ></TextField>
+     <TextField fx:id="txt15" ></TextField>
+     <TextField fx:id="txt16" ></TextField>
+     <TextField fx:id="txt17" ></TextField>
+     <TextField fx:id="txt18" ></TextField>
+     <TextField fx:id="txt19" ></TextField>
+     <TextField fx:id="txt20" ></TextField>
+     <TextField fx:id="txt21" ></TextField>
+     <TextField fx:id="txt22" ></TextField>
+     <TextField fx:id="txt23" ></TextField>
+     <TextField fx:id="txt24" ></TextField>
+     <TextField fx:id="txt25" ></TextField>
+     <TextField fx:id="txt26" ></TextField>
+     <TextField fx:id="txt27" ></TextField>
+     <TextField fx:id="txt28" ></TextField>
+     <TextField fx:id="txt29" ></TextField>
+     <TextField fx:id="txt30" ></TextField>
+     <TextField fx:id="txt31" ></TextField>
+     <TextField fx:id="txt32" ></TextField>
+     <TextField fx:id="txt33" ></TextField>
+     <TextField fx:id="txt34" ></TextField>
+     <TextField fx:id="txt35" ></TextField>
+     <TextField fx:id="txt36" ></TextField>
+     
+     <Button fx:id="guardar" text="Guardar" onAction="#manejaBtn" ></Button>
+     <Button fx:id="reestablecer" text="Default" onAction="#manejaBtn" ></Button>
+     
+         
+</AnchorPane>
