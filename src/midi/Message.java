@@ -5,35 +5,29 @@
  */
 package midi;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.ShortMessage;
+import javafx.beans.property.SimpleDoubleProperty;
+import jm.JMC;
+import jm.music.data.Note;
 
 /**
  *
  * @author Daniel Castillo
  */
-public class Message extends ShortMessage implements Comparable<Message>{
+public class Message extends Note implements Comparable<Message>{
     private long time;
-    private int vel;
-    private long phaser;
-    public Message(int status, int data1, int data2,long timestamp) throws InvalidMidiDataException {
-        super(status,data1,data2);
+    private int status;
+    public static final SimpleDoubleProperty pan = new SimpleDoubleProperty(0.5);
+    public Message(int status, int pitch, int dynamic, long timestamp){
+        super(pitch, JMC.WHOLE_NOTE, dynamic, pan.get());
         this.time = timestamp;
-        this.vel = data2;
+        this.status = status;
     }
     public long getTimestamp(){
         return this.time;
     }
-    public int getVel(){
-        return this.vel;
+    public int getStatus(){
+        return status;
     }
-    public void setPhaser(long phaser){
-        this.phaser = phaser;
-    }
-    public long getPhaser(){
-        return this.phaser;
-    }
-
     @Override
     public int compareTo(Message o) {
         if(time < o.getTimestamp()){

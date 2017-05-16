@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * @author Bear
  */
 public class cController {
-    public static boolean[] controler = {false,false,false,false,true}; //activa los pedales
-    public static int[] delayValues = {500000,5}; //primer valor = delay; segundo valor = feedback
+    public static boolean[] controler = {false,false,false,false,false}; //activa los pedales
+    public static int[] delayValues = {500,5}; //primer valor = delay; segundo valor = feedback
     public static int chorusValue = 0;
     public static int reverbValue = 0;
     public static int pressureValue = 0;
