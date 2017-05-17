@@ -28,7 +28,7 @@ public class Clock {
         clock.start();
     }
     public long getCurrent(){
-        return current;
+        return current - begin;
     }
     public void endRecord(){
         clock.stopRunning();

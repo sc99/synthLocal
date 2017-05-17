@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,6 +52,7 @@ import jm.audio.synth.Filter;
 import static jm.constants.Pitches.C3;
 import jmusic.DefaultMusic;
 import jmusic.MyInstrument;
+import midi.cSequence;
 
 /**
  * FXML Controller class
@@ -139,12 +138,11 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     public  static ToggleButton Reverb=new ToggleButton();
     public  static ToggleButton Tremolo=new ToggleButton();
     
-    public static Map<Integer,RTMixer> statusMixers = new HashMap();
     //TRUE = DISPONIBLE
     //FALSE = NO DISPONIBLE
     private Map<String,Integer> conf = new HashMap();
     //ASIGNACION TECLA - NOTA
-    public static Map<Integer,Integer> relNoteMixer = new HashMap();
+    public static Map<Integer,RTMixer> relNoteMixer = new HashMap();
     
     @FXML private ComboBox<Map<Integer,Map<Integer,Object>>> cmbComponentes;
     @FXML private Label caracteristicas;
@@ -492,7 +490,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try{
-            MIDI = new midi.cMidi();
+            
             Image cho=new Image(getClass().getResourceAsStream("/imgs/Chorus.png"));   
             ImageView s=new ImageView(cho);
             s.setFitWidth(lPant/12);
@@ -611,7 +609,6 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
             play.setLayoutY(aPant / 16 * 6);
             play.setDisable(true);
 
-            MIDI.start();
             btnsNoVisibles(true);
             setBorderR("-fx-border-radius: 19; -fx-border-color: transparent");
             
@@ -754,11 +751,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
             
             //--------------------------------VOLUMEN-----------------------------
             
-            SimpleDoubleProperty val = new SimpleDoubleProperty(0.5);
+            SimpleDoubleProperty val = new SimpleDoubleProperty(1.0);
             val.bind(sldVolumen.valueProperty());
             VOLUME_VALUES.put(MyInstrument.VOLUME_VALUE,val);
             sldVolumen.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                lblVolumen.setText(Double.toString(newValue.doubleValue() * 10));
+                NumberFormat f = new DecimalFormat("#0.0");
+                lblVolumen.setText(f.format(newValue.doubleValue()).replace(",", "."));
             });
             chkVolumen.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 if(newValue){
@@ -781,46 +779,57 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
                 lblPaneo.setText(Double.toString(newValue.doubleValue() * 10));
             });
             
+            MIDI = new midi.cMidi();
+            MIDI.start();
+            
+            play.setDisable(true);
         }catch(Exception e){
             utilities.Message.explainException(e).showAndWait();
         }
     }  
     @FXML
     public void record(ActionEvent e){
-//        cSequence.turnRecording();
-//        record.setDisable(true);
-//        pause.setDisable(false);
-//        stop.setDisable(false);
-//        play.setDisable(true);
+        cSequence.startRecording();
+        record.setDisable(true);
+        pause.setDisable(false);
+        stop.setDisable(false);
+        play.setDisable(true);
     }
     @FXML
     public void play(ActionEvent e){
-//        try{
-//            cSequence.playRecord();
-//        }catch(Exception ex){
-//            System.out.println("Error al reproducir!!");
-//            System.out.println(ex.getMessage());
-//        }
-//        record.setDisable(true);
-//        pause.setDisable(true);
-//        stop.setDisable(false);
-//        play.setDisable(true);
+        if(cSequence.isRecording())
+            cSequence.unPauseRecord();
+        else
+            if(cSequence.isPaused())
+                cSequence.unPausePlay();
+            else
+                cSequence.startPlay();
+        record.setDisable(true);
+        pause.setDisable(false);
+        stop.setDisable(false);
+        play.setDisable(true);
     }
     @FXML
     public void stop(ActionEvent e){
-//        cSequence.finish();
-//        record.setDisable(false);
-//        pause.setDisable(false);
-//        stop.setDisable(false);
-//        play.setDisable(false);
+        if(cSequence.isRecording())
+            cSequence.stopRecord();
+        else
+            cSequence.stopPlay();
+        record.setDisable(false);
+        pause.setDisable(false);
+        stop.setDisable(false);
+        play.setDisable(false);
     }
     @FXML
     public void pause(ActionEvent e){
-//        cSequence.turnRecording();
-//        record.setDisable(false);
-//        pause.setDisable(true);
-//        stop.setDisable(false);
-//        play.setDisable(false);
+        if(cSequence.isRecording())
+            cSequence.pauseRecord();
+        else
+            cSequence.pausePlay();
+        record.setDisable(true);
+        pause.setDisable(true);
+        stop.setDisable(false);
+        play.setDisable(false);
     }
     @FXML
     public void save(ActionEvent e){
