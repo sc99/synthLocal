@@ -80,14 +80,12 @@ public class cMidi extends Thread implements Diccionary{
                         int suich = note.getStatus();
                         if(suich == 0){
                             //NOTE OFF
-                            System.out.println("OFF: " + note.getPitch());
                             relNoteMixer.get(note.getPitch()).stop();
                             if(cSequence.isRecording()){
-                                cSequence.addRecord(new Note(Note.REST,Durations.WHOLE_NOTE));
+                                cSequence.addRecord(note,0);
                             }
                         }else{
                             //NOTE ON
-                            System.out.println("ON: " + note.getDynamic());
                             jm.audio.Instrument[] in = new jm.audio.Instrument[1];
                             in[0] = new MyInstrument(44100,tecladoCtrl.CONTROLLER);
                             RTLine line = new MyTempLine(in,note,note.getPitch());
@@ -95,7 +93,7 @@ public class cMidi extends Thread implements Diccionary{
                             relNoteMixer.put(note.getPitch(),mixer);
                             relNoteMixer.get(note.getPitch()).begin();
                             if(cSequence.isRecording()){
-                                cSequence.addRecord(note);
+                                cSequence.addRecord(note,1);
                             }
                         }
                         
