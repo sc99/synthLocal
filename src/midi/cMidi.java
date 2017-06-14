@@ -8,23 +8,18 @@ package midi;
 import controladores.cController;
 import controladores.tecladoCtrl;
 import static controladores.tecladoCtrl.relNoteMixer;
-import static controladores.tecladoCtrl.statusMixers;
-import java.util.ArrayList;
 import java.util.Collections;
-import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import jm.audio.RTMixer;
+import jm.constants.Durations;
+import jm.music.data.Note;
 import jm.music.rt.RTLine;
 import jmusic.MyInstrument;
 import jmusic.MyTempLine;
 import static midi.Diccionary.CHORUS;
 import static midi.Diccionary.MODULATION;
-import static midi.Diccionary.NOTE_OFF;
-import static midi.Diccionary.NOTE_ON;
 import static midi.Diccionary.REVERB;
 
 /**
@@ -85,33 +80,23 @@ public class cMidi extends Thread implements Diccionary{
                         int suich = note.getStatus();
                         if(suich == 0){
                             //NOTE OFF
-                            System.out.println("OFF: " + note.getPitch());
-                            if(relNoteMixer.get(note.getPitch()) != null){
-                                int mixer = relNoteMixer.get(note.getPitch());
-                                if(statusMixers.get(mixer)!=null){
-                                    statusMixers.get(mixer).stop();
-                                    statusMixers.remove(mixer);
-                                }
-                                relNoteMixer.remove(note.getPitch());
+                            relNoteMixer.get(note.getPitch()).stop();
+                            if(cSequence.isRecording()){
+                                cSequence.addRecord(note,0);
                             }
                         }else{
                             //NOTE ON
-                            System.out.println("ON: " + note.getDynamic());
-                            int position = statusMixers.keySet().size();
-                            if(relNoteMixer.get(note.getPitch()) == null){
-                                jm.audio.Instrument[] in = new jm.audio.Instrument[9];
-                                for(int i = 0; i < in.length; i++)
-                                    in[i] = new MyInstrument(44100,tecladoCtrl.CONTROLLER);
-                                RTLine line = new MyTempLine(in,note,position);
-                                RTMixer mixer = new RTMixer(new RTLine[]{line});
-                                statusMixers.put(position,mixer);
-                                relNoteMixer.put(note.getPitch(),position);
-                                mixer.begin();
+                            jm.audio.Instrument[] in = new jm.audio.Instrument[1];
+                            in[0] = new MyInstrument(44100,tecladoCtrl.CONTROLLER);
+                            RTLine line = new MyTempLine(in,note,note.getPitch());
+                            RTMixer mixer = new RTMixer(new RTLine[]{line});
+                            relNoteMixer.put(note.getPitch(),mixer);
+                            relNoteMixer.get(note.getPitch()).begin();
+                            if(cSequence.isRecording()){
+                                cSequence.addRecord(note,1);
                             }
-    //                        if(controladores.Clock.getBegin() != -1){
-    //                            cSequence.record(queue.get(0).getStatus(), queue.get(0).getData1(), queue.get(0).getData2());
-    //                        }
                         }
+                        
                         cController.queue.remove(0);
                     }
                 }

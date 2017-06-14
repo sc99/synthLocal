@@ -153,8 +153,8 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <CheckBox fx:id="chkVolumen" mnemonicParsing="false" text="Volumen" />
-                        <Slider fx:id="sldVolumen" blockIncrement="0.1" majorTickUnit="1.0" max="1.0" minorTickCount="9" orientation="VERTICAL" showTickMarks="true" snapToTicks="true" value="0.5" />
+                        <CheckBox fx:id="chkVolumen" mnemonicParsing="false" text="Compresor" />
+                        <Slider fx:id="sldVolumen" majorTickUnit="1.0" min="1.0" max="100.0" orientation="VERTICAL" value="1.0" />
                         <Label fx:id="lblVolumen" text="0" />
                      </children>
                   </VBox>

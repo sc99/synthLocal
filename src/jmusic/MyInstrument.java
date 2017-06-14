@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import jm.audio.AOException;
 import jm.audio.AudioObject;
 import jm.audio.Instrument;
+import jm.audio.synth.Compressor;
 import jm.audio.synth.Envelope;
 import jm.audio.synth.Filter;
 import jm.audio.synth.Noise;
@@ -37,7 +38,7 @@ public class MyInstrument extends Instrument{
     private Envelope envelope;
     
     //Modificador de volumen
-    private Volume volume;
+    private Compressor volume;
     
     //Modificador de paneo
     private StereoPan stereopan;
@@ -109,7 +110,7 @@ public class MyInstrument extends Instrument{
         }
         if(controller.get(VOLUME) != null){
             Map<Integer,Object> parameters = controller.get(VOLUME);
-            volume = new Volume(next == null ? first : next, ((SimpleDoubleProperty)parameters.get(VOLUME_VALUE)).get());
+            volume = new Compressor(next == null ? first : next, 1.0, 1.0, ((SimpleDoubleProperty)parameters.get(VOLUME_VALUE)).get());
             next = envelope;
         }
     }
@@ -125,7 +126,7 @@ public class MyInstrument extends Instrument{
         }
         if(controller.get(VOLUME) != null){
             Map<Integer,Object> parameters = controller.get(VOLUME);
-            volume.setVolume((Double)parameters.get(VOLUME_VALUE));
+            volume.setGain((Double)parameters.get(VOLUME_VALUE));
         }
     }
 
