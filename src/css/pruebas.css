@@ -16,7 +16,8 @@ ToggleButton{
 AnchorPane{
     -fx-background-color: white;
 }
-Button
+
+Button, .combo
 {
     -fx-font-size:14px;
     -fx-background-color:transparent;
@@ -26,23 +27,63 @@ Button
     -fx-border-style: solid;
     -fx-border-radius: 6px;
 }
-Button:focus
+.primero
+{
+    -fx-font-size:30px;
+    -fx-background-color:transparent;
+    -fx-border-color:black;
+    -fx-text-fill: black;
+    -fx-cursor: pointer;
+    -fx-border-style: solid;
+    -fx-border-radius: 6px;
+}
+
+TextField, PasswordField
+{
+    -fx-font-size:20px;
+    -fx-background-color:transparent;
+    -fx-border-color:black;
+    -fx-text-fill: black;
+    -fx-cursor: pointer;
+    -fx-border-style: solid;
+    -fx-border-radius: 6px;
+}
+Button:focus, .primero:focus, .combo:focus
 {
     -fx-outline:10px;
 }
-Button:hover
+Button:hover, TextField:hover, PasswordField:hover, .primero:hover, .combo:hover
 {
     -fx-background-color:black;
     -fx-text-fill:white; 
 }
-.rec:hover
-{
-    -fx-background-color: black;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
-    -fx-outline-color: grey;
 
+
+MenuBar
+{
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0);
+    -fx-padding: 5,0,0,0;
+    -fx-font-size: 18px;
 }
 
+.teclaBS
+{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.47), 3, 0.5,0,15);
+}
 
+.teclaNS
+{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.47), 3, 0.5,0,7.5);
+}
+
+.teclaBO
+{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.23), 0, 0.5,0,10);
+}
+
+.teclaNO
+{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.23), 0, 0.5,0,2.5);
+}
 

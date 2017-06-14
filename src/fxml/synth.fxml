@@ -15,19 +15,19 @@
          <children>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
                <children>
-                    <ImageView fx:id="logo" fitHeight="300.0" fitWidth="460.0">
+                    <ImageView styleClass="logo" fx:id="logo" fitHeight="300.0" fitWidth="460.0">
                      <image>
                         <Image url="@../imgs/Synth.jpg" />
                      </image>
                   </ImageView>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
                      <children>
-                          <TextField fx:id="usr" onKeyReleased="#validaEspeciales" promptText="Usuario" />
-                          <PasswordField fx:id="psw" promptText="Contraseña" />
+                          <TextField fx:id="usr" prefHeight="40.0" onKeyReleased="#validaEspeciales" promptText="Usuario" />
+                          <PasswordField fx:id="psw" prefHeight="40.0" promptText="Contraseña" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                            <children>
-                                <Button fx:id="btnSesion" onAction="#manejaBtn" text="Iniciar Sesion" />
-                                <Button fx:id="btnInvitado" onAction="#manejaBtn" text="Invitado" />
+                                <Button styleClass="primero" fx:id="btnSesion" prefHeight="40.0" onAction="#manejaBtn" text="Iniciar Sesion" />
+                                <Button styleClass="primero" fx:id="btnInvitado" prefHeight="40.0" onAction="#manejaBtn" text="Invitado" />
                            </children>
                         </HBox>
                           <Label fx:id="label" />

@@ -20,6 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -180,7 +181,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     @FXML private Slider sldPaneo;
     @FXML private Label lblPaneo;
     @FXML private VBox contComponentes;
-    
+            
     public static final Map<Integer,Map<Integer,Object>> CONTROLLER = new HashMap();
     private final Map<Integer,Object> FILTER_VALUES = new HashMap();
     private final Map<Integer,Object> ENVELOPE_VALUES = new HashMap();
@@ -420,10 +421,21 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     public void tocarTecla(KeyEvent e){
         try{
             String idTcla=getNotaTocada(e.getText());
+            Paint efecto = null; 
             int xId=0;
             for(int i=0;i<arrNtas.length;i++){
-                if(arrNtas[i].getId().equals(idTcla)){           
-                   Paint efecto=idTcla.endsWith("s")?Color.PURPLE:Color.LIGHTCYAN;
+                if(arrNtas[i].getId().equals(idTcla)){
+                   if(idTcla.endsWith("s"))
+                   {
+                       efecto = Color.PURPLE;
+                       arrNtas[i].getStyleClass().remove("teclaNS");
+                       arrNtas[i].getStyleClass().add("teclaNO");
+                   }else
+                   {
+                       efecto = Color.DARKCYAN;
+                       arrNtas[i].getStyleClass().remove("teclaBS");
+                       arrNtas[i].getStyleClass().add("teclaBO");
+                   }
                    if(!arrNtas[i].getFill().equals(efecto)){
                         int nota = i + C3;
                         MIDI.addToQueue(nota, 1);
@@ -439,13 +451,24 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
    public void sueltaTecla(KeyEvent e){
         try{
             String idTcla=getNotaTocada(e.getText());
+            Paint efecto = null; 
             int xId=0;
             if(e.getText().equals(" ")){
                 cController.soft=false;
             }
             for(int i=0;i<arrNtas.length;i++){
                 if(arrNtas[i].getId().equals(idTcla)){
-                    Paint efecto=idTcla.endsWith("s")?Color.BLACK:Color.WHITE;
+                     if(idTcla.endsWith("s"))
+                   {
+                       efecto = Color.BLACK;
+                       arrNtas[i].getStyleClass().remove("teclaNO");
+                       arrNtas[i].getStyleClass().add("teclaNS");
+                   }else
+                   {
+                       efecto = Color.WHITE;
+                       arrNtas[i].getStyleClass().remove("teclaBO");
+                       arrNtas[i].getStyleClass().add("teclaBS");
+                   }
                     arrNtas[i].setFill(efecto);
                     int nota = i + C3;
                     MIDI.addToQueue(nota, 0);
@@ -505,7 +528,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
                 aR[i].setHeight(aPant/6);
                 aR[i].setLayoutX(aR[i-1].getLayoutX()+aR[i-1].getWidth()*3/4);
                 aR[i].setFill(Color.BLACK);
-                aR[i].setStroke(Color.WHITE); 
+                aR[i].setStroke(Color.BLACK); 
             }
         }
     }
@@ -531,6 +554,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try{
+            cmbComponentes.getStyleClass().add("combo");
             MIDI = new midi.cMidi();
             Image cho=new Image(getClass().getResourceAsStream("/imgs/Chorus.png"));   
             ImageView s=new ImageView(cho);
@@ -601,7 +625,7 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
 
             arrNtas=aR;
 
-            menu.setPrefSize(lPant,aPant/16);
+            menu.setPrefSize(lPant,aPant/20);
 
             asignarTeclas(aR);
             //arrR=aR;       
@@ -758,7 +782,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
             SimpleDoubleProperty cutoff = new SimpleDoubleProperty(100.0);
             cutoff.bind(sldFiltro.valueProperty());
             sldFiltro.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                lblFiltro.setText(Double.toString(Math.floor(newValue.doubleValue())));
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+                       lblFiltro.setText(Double.toString(Math.floor(newValue.doubleValue())));
+                    }
+                });
             });
             FILTER_VALUES.put(MyInstrument.FILTER_CUTOFF, cutoff);
             chkFiltro.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -798,7 +827,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
             val.bind(sldVolumen.valueProperty());
             VOLUME_VALUES.put(MyInstrument.VOLUME_VALUE,val);
             sldVolumen.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                lblVolumen.setText(Double.toString(newValue.doubleValue() * 10));
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        lblVolumen.setText(Double.toString(newValue.doubleValue() * 10));
+                    }
+                });
             });
             chkVolumen.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 if(newValue){

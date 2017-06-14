@@ -51,9 +51,8 @@ public class Comunicacion  extends Thread{
         PrintStream salida=new PrintStream(cliente.getOutputStream());
         salida.flush();
         salida.println("EOC");
-        
        cliente.close();
-       salida.close();
+      // salida.close();
        throw new Exception("Forzado");
    }
    

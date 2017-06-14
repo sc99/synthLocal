@@ -51,7 +51,7 @@ public class synthCtrl implements Initializable {
     private PasswordField psw;
     @FXML
     private ImageView logo;
-
+    
     @FXML
     public int getaPant() {
         return aPant;
@@ -274,9 +274,4 @@ public class synthCtrl implements Initializable {
         utilities.Validation.noSpecial((TextField) e.getSource());
     }
 
-//    private static String getCuenta(java.lang.String correo, java.lang.String contra) {
-//        ws.WsLocal_Service service = new ws.WsLocal_Service();
-//        ws.WsLocal port = service.getWsLocalPort();
-//        return port.getCuenta(correo, contra);
-//    }
 }
