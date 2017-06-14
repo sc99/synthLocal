@@ -47,6 +47,7 @@ public class MyInstrument extends Instrument{
     //por el momento, no modificables
     private int sampleRate;
     private int channels;
+    private int dynamic;
     
     //lista de valores que debe recibir el constructor
     //para guiar la construccion del instrumento
@@ -74,6 +75,13 @@ public class MyInstrument extends Instrument{
         this.sampleRate = 44100;
         this.channels = 2;
         this.controller = controller;
+        this.dynamic = -1;
+    }
+    public MyInstrument(int sampleRate, Map<Integer,Map<Integer,Object>> controller, int dynamic){
+        this.sampleRate = 44100;
+        this.channels = 2;
+        this.controller = controller;
+        this.dynamic = dynamic;
     }
     @Override
     public void createChain() throws AOException {
@@ -111,7 +119,13 @@ public class MyInstrument extends Instrument{
         if(controller.get(VOLUME) != null){
             Map<Integer,Object> parameters = controller.get(VOLUME);
             volume = new Compressor(next == null ? first : next, 1.0, 1.0, ((SimpleDoubleProperty)parameters.get(VOLUME_VALUE)).get());
-            next = envelope;
+            next = volume;
+        }
+        if(this.dynamic != -1){
+            Volume vol = new Volume(next == null ? first : next, (double)this.dynamic / 127);
+            System.out.println("VOLUME: " + vol.getVolume());
+        }else{
+            Volume vol = new Volume(next == null ? first : next, 1.0);
         }
     }
     @Override

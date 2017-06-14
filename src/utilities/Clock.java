@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleLongProperty;
 
 /**
@@ -15,7 +16,7 @@ public class Clock {
     private long begin;
     private long end;
     private long current;
-    private SimpleLongProperty visibleCurrent = new SimpleLongProperty(0);
+    public static SimpleLongProperty visibleCurrent = new SimpleLongProperty(0);
     private long delta;
     private long duration;
     private ThreadClock clock;
@@ -77,7 +78,6 @@ public class Clock {
         public void run(){
             while(!stop){
                 current = System.currentTimeMillis();
-                visibleCurrent.set((long)Math.floor((System.currentTimeMillis() - begin)/1000));
             }
         }
         public void stopRunning(){

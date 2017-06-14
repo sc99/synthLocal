@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import jm.audio.Instrument;
+import jm.music.data.CPhrase;
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
@@ -23,12 +24,13 @@ import utilities.Clock;
  * @author Bear
  */
 public class cSequence implements Diccionary{
+    private static Play play;
     private static boolean recording = false;
     private static boolean playing = false;
     private static boolean recorded = false;
     private static boolean paused = false;
-    private static ArrayList<Part> parts;
     private static ArrayList<StoredMessage> messages;
+    private static ArrayList<Instrument> ins;
     private static Clock clock;
     private static Score score;
     private static final int BPM = 120;
@@ -39,12 +41,12 @@ public class cSequence implements Diccionary{
         recording = true;
         clock = new Clock();
         clock.beginRecord();
-        score = new Score();
-        score.setTempo(BPM);
-        parts = new ArrayList<>();
         messages = new ArrayList<>();
+        score = new Score();
+        score.setTempo(80);
+        ins = new ArrayList<>();
     }
-    public static void addRecord(Note note, int status){
+    public static void addRecord(Note note, int status, Instrument inst){
         double bps = (double)BPM/60;
         double bpms = (double)bps/1000;
         double ts = clock.getCurrent();
@@ -56,13 +58,10 @@ public class cSequence implements Diccionary{
             for(StoredMessage sm: messages){
                 if(sm.getNotePitch() == note.getPitch()){
                     sm.setEnd(tick);
-                    Part p = new Part();
-                    Phrase ph = new Phrase();
-                    ph.addNote(sm.getNote());
-                    ph.setStartTime(sm.getBegin());
-                    p.add(ph);
-                    p.setInstrument(parts.size());
-                    parts.add(p);
+                    Phrase ph = new Phrase(sm.getNote(),sm.getBegin());
+                    Part pt = new Part(ph,"lol" + score.getPartArray().length, score.getPartArray().length);
+                    score.addPart(pt);
+                    ins.add(inst);
                     messages.remove(sm);
                     break;
                 }
@@ -87,13 +86,12 @@ public class cSequence implements Diccionary{
     public static void startPlay(){
         playing = true;
         clock.beginPlay();
-        Instrument[] ins = new Instrument[parts.size()];
-        for(int i = 0; i < ins.length; i++)ins[i] = new MyInstrument(44100, controladores.tecladoCtrl.CONTROLLER);
-        score.addPartList(parts.toArray(new Part[parts.size()]));
-        Play.audio(score, ins);
+        View.print(score);
+        play = new Play();
+        play.audio(score, ins.toArray(new Instrument[ins.size()]));
     }
     public static void pausePlay(){
-        Play.pauseAudio();
+        play.pauseAudio();
         clock.pausePlay();
         paused = true;
     }
@@ -104,7 +102,7 @@ public class cSequence implements Diccionary{
     }
     public static void stopPlay(){
         System.out.println("stoped");
-        Play.stopAudio();
+        play.stopAudio();
         clock.endPlay();
         paused = false;
     }
@@ -115,12 +113,13 @@ public class cSequence implements Diccionary{
         public StoredMessage(Note note, double tickBegin){
             this.note = note;
             this.tickBegin = tickBegin;
+            System.out.println("Stored: DYNAMIC=" + note.getDynamic());
         }
         public Note getNote(){return note;}
         public int getNotePitch(){return note.getPitch();}
         public void setEnd(double end){
             tickEnd = end;
-            this.note.setDuration(tickEnd - tickBegin);
+            this.note.setDuration(tickEnd - tickBegin + 0.5);
             System.out.println("Tick: " + tickBegin + " - " + tickEnd);
         }
         public double getBegin(){return tickBegin;}

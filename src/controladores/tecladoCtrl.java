@@ -44,6 +44,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -179,6 +180,8 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
     @FXML private Slider sldPaneo;
     @FXML private Label lblPaneo;
     @FXML private VBox contComponentes;
+    
+    @FXML private Label tempo;
             
     public static final Map<Integer,Map<Integer,Object>> CONTROLLER = new HashMap();
     private final Map<Integer,Object> FILTER_VALUES = new HashMap();
@@ -421,6 +424,12 @@ public class tecladoCtrl extends synthCtrl implements Initializable, JMC{
             String idTcla=getNotaTocada(e.getText());
             Paint efecto = null; 
             int xId=0;
+            if(e.getCode() == KeyCode.SPACE){
+                System.out.println("si tru");
+                for(Integer n: relNoteMixer.keySet()){
+                    relNoteMixer.get(n).stop();
+                }
+            }
             for(int i=0;i<arrNtas.length;i++){
                 if(arrNtas[i].getId().equals(idTcla)){
                    if(idTcla.endsWith("s"))

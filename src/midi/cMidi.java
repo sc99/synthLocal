@@ -82,18 +82,18 @@ public class cMidi extends Thread implements Diccionary{
                             //NOTE OFF
                             relNoteMixer.get(note.getPitch()).stop();
                             if(cSequence.isRecording()){
-                                cSequence.addRecord(note,0);
+                                cSequence.addRecord(note,0,null);
                             }
                         }else{
                             //NOTE ON
                             jm.audio.Instrument[] in = new jm.audio.Instrument[1];
-                            in[0] = new MyInstrument(44100,tecladoCtrl.CONTROLLER);
+                            in[0] = new MyInstrument(44100,tecladoCtrl.CONTROLLER,note.getDynamic());
                             RTLine line = new MyTempLine(in,note,note.getPitch());
                             RTMixer mixer = new RTMixer(new RTLine[]{line});
                             relNoteMixer.put(note.getPitch(),mixer);
                             relNoteMixer.get(note.getPitch()).begin();
                             if(cSequence.isRecording()){
-                                cSequence.addRecord(note,1);
+                                cSequence.addRecord(note,1,in[0]);
                             }
                         }
                         
@@ -139,6 +139,7 @@ public class cMidi extends Thread implements Diccionary{
                         }
                     }
                     for(int i = 0; i < nummessages; i++){
+                        System.out.println("Delay: DYNAMIC: " + message[i].getDynamic());
                         cController.queue.add(message[i]);
                         cController.queue.add(clone[i]);
                         Collections.sort(cController.queue);
@@ -161,6 +162,7 @@ public class cMidi extends Thread implements Diccionary{
                         }
                     }
                     for(int i = 0; i < nummessages; i++){
+                        System.out.println("Delay: DYNAMIC: " + message[i].getDynamic());
                         cController.queue.add(message[i]);
                         Collections.sort(cController.queue);
                     }
